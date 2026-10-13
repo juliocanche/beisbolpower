@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beisbolpower Inteligente - App Móvil de Bateo</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#ef4444',
+              orange: '#f97316',
+              yellow: '#eab308',
+              dark: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- HTML2PDF library for client-side PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client"
+      }
+    }
+  </script>
+
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .app-container { max-width: 100% !important; border: none !important; box-shadow: none !important; }
+    }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    @keyframes flameGlow {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    .flame-animation {
+      animation: flameGlow 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 flex justify-center items-start sm:py-6">
+
+  <div id="root" class="w-full max-w-md h-full sm:h-[880px] bg-slate-900 sm:rounded-3xl shadow-2xl border border-slate-800 flex flex-col overflow-hidden relative app-container"></div>
+
+  <script type="text/babel" data-type="module">
+    import React, { useState, useEffect, useRef } from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    const DRILLS_DATABASE = [
+      // 1. Técnica y Propiocepción (TP)
+      { id: 'TP1', areaKey: 'TP', area: '1. Técnica y propiocepción', name: '3 zonas adentro-centro-afuera', desc: 'Golpeo de bola en 3 ubicaciones; ajustar postura, trayectoria y punto de contacto.', obj: 'Propiocepción, cobertura de zona, punto de contacto (adentro, afuera y al centro).', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP2', areaKey: 'TP', area: '1. Técnica y propiocepción', name: '3 zonas arriba-en medio-abajo', desc: 'Alternar golpeo alto, medio y bajo sin cambiar intención de contacto fuerte.', obj: 'Adaptación y control del golpeo con el barril', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP3', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Swing 3 tiempos', desc: 'Iniciar con postura balanceada 1.-Carga 2.-Separa y 3.- Golpea', obj: 'Crear memoria muscular de la secuencia correcta del swing.', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP4', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Ángulo con PVC-Palo', desc: 'Abrazando un PVC o Palo de escoba 1.- carga y 2.-Gira golpeando la bola con el ángulo correcto', obj: 'Generar el ángulo correcto al batear', diff: 1, mat: 'PVC-Palo escoba, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP5', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Inicio de swing abierto', desc: 'Iniciar ligeramente abierto y mantener control del centro de masa girando el tronco con las manos simultáneamente', obj: 'Estabilidad y rotación sin desconectar', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP6', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Paso atrás', desc: 'Paso corto hacia atrás antes de cargar y atacar.', obj: 'Carga, ritmo, uso del suelo', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP7', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Camino y golpeo', desc: 'Entrada caminando controlada dos pasos al swing.', obj: 'Secuencia y transferencia de energía', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP8', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Bat corto con mano dominante', desc: 'Swings con bate corto usando mano superior; foco en contacto limpio.', obj: 'Ruta de manos y control del barril', diff: 1, mat: 'Bat corto, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP9', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Bat corto con mano inferior', desc: 'Swings con bate corto usando mano inferior; sin colapsar postura.', obj: 'Dirección del barril', diff: 1, mat: 'Bat corto, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP10', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Mantener manos atrás', desc: 'Sujetar el bat e iniciar el swing obligando a dejar las manos atrás hasta el momento preciso.', obj: 'Mantener el control de las manos atrás al realizar el swing', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { id: 'TP11', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Swing por dentro con balón', desc: 'Sujetar un balón con los brazos al realizar el swing para evitar la extensión de las manos antes del impacto.', obj: 'Golpear la bola por dentro de ella evitando el rodeo.', diff: 1, mat: 'Balón, Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+
+      // 2. Óculo-manual y reconocimiento (O)
+      { id: 'O1', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Pelota de tenis pared', desc: 'Rebotar/recibir pelota de tenis y progresar a swing o toque.', obj: 'Reacción y seguimiento visual', diff: 1, mat: 'Pelota de tenis, bat, red/jaula', modes: ['1.-Vs Pared', '2.- Soft toss con rebote', '3.- Front toss o Bp con rebote'] },
+      { id: 'O2', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Bolas marcadas', desc: 'Pelotas con colores/números; identificar antes de decidir swing.', obj: 'Reconocimiento visual y decisión', diff: 2, mat: 'Pelotas marcadas con colores/números, bat, jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'O3', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Golpeo de objetos pequeños', desc: 'Golpear mini pelotas u objetos pequeños.', obj: 'Precisión visual y bat-a-bola', diff: 2, mat: 'Bate, pelotas pequeñas, palo, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'O4', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Dos bolas a la vez', desc: 'Coach muestra y lanza dos bolas e indica una para golpear.', obj: 'Selección y reacción', diff: 2, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.- 2 Tball', '2.-Soft toss', '3.- Front toss'] },
+      { id: 'O5', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Cantar lanzamiento bola o strike', desc: 'Se lanza la bola y el bateador identifica y canta si es bola o strike.', obj: 'Disciplina de zona', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'O6', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Identificar lanzamiento antes de golpear', desc: 'Alternar recta y rompiente; cantar tipo de lanzamiento antes del swing.', obj: 'Lectura de trayectoria', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'O7', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'BP live', desc: 'Realizar enfrentamiento real de un turno al bat, con diferentes lanzamientos.', obj: 'Adaptabilidad y decisión', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'] },
+      { id: 'O8', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Coordinación para golpear', desc: 'Asignar indicador a cada mano y al lanzar la bola, golpear con la mano indicada.', obj: 'Coordinación y decisión', diff: 2, mat: 'Bats cortos, pelotas tenis, red/jaula', modes: ['1.- 2 Tball', '2.-Soft toss', '3.- Front toss'] },
+      { id: 'O9', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Visión + Contacto Competencia', desc: 'Puntos por decisión correcta según zona y tipo del lanzamiento + contacto fuerte.', obj: 'Integración visión-decisión-ejecución', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+
+      // 3. Timing (T)
+      { id: 'T1', areaKey: 'T', area: '3. Timing', name: 'Sincronización de la carga con el pitcher', desc: 'Inicia carga con movimiento clave del lanzador (separación de la bola del guante en el windup).', obj: 'Sincronización inicial', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'T2', areaKey: 'T', area: '3. Timing', name: 'Variación del toss', desc: 'Realizar variación de las velocidades del lanzamiento.', obj: 'Ritmo y ajustabilidad', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'T3', areaKey: 'T', area: '3. Timing', name: 'Pausar la carga y golpear', desc: 'Pausa breve en la carga y golpea a la indicación.', obj: 'Separar preparación de decisión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'T4', areaKey: 'T', area: '3. Timing', name: 'Variación de distancias', desc: 'Acercar/alejar lanzador manteniendo velocidad aparente variable.', obj: 'Ajuste temporal', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'T5', areaKey: 'T', area: '3. Timing', name: 'Progresión de lanzamientos baja a alta velocidad', desc: 'Series progresivas de baja a alta velocidad.', obj: 'Ventana de decisión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'T6', areaKey: 'T', area: '3. Timing', name: 'Mezcla de lanzamientos', desc: 'Mezclar recta/cambio/rompiente con objetivo de mantener postura.', obj: 'Mantener energía y esperar', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'T7', areaKey: 'T', area: '3. Timing', name: 'Drill de decisión', desc: 'Mantener el swing hasta recibir indicación o estímulo para retrasar lo más posible el impacto.', obj: 'Decisión tardía eficiente', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'T8', areaKey: 'T', area: '3. Timing', name: 'Drill de BP live en juego', desc: 'Simulación de partido en vivo con catcher, lanzador a distancia real y ampayer.', obj: 'Timing específico de juego', diff: 3, mat: 'Lanzador, catcher, pelotas, casco, jaula y bat', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'] },
+      { id: 'T9', areaKey: 'T', area: '3. Timing', name: 'Drill situacional 2 strikes', desc: 'Situación 2 strikes; reducir movimiento previo sin perder agresividad y defender la zona.', obj: 'Timing bajo presión', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'] },
+
+      // 4. Capacidades Físicas (CF)
+      { id: 'CF1', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento lateral con balón medicinal', desc: 'Lanzamiento rotacional lateral contra pared, ambos lados.', obj: 'Potencia rotacional core/cadera', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'] },
+      { id: 'CF2', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento en columpio con balón medicinal', desc: 'Lanzamiento ascendente desde piernas y cadera.', obj: 'Triple extensión y potencia', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'] },
+      { id: 'CF3', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento de balón medicinal técnica swing', desc: 'Empuje rotacional de balón desde postura atlética.', obj: 'Transferencia pierna-core-brazo', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'] },
+      { id: 'CF4', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Jump Squat', desc: 'Saltos verticales explosivos con aterrizaje estable.', obj: 'Potencia de piernas', diff: 2, mat: 'Espacio seguro, mancuernas y barra hexagonal', modes: ['1.- Sin Peso', '2.- Mancuernas', '3.- Barra Hexagonal'] },
+      { id: 'CF5', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lateral Bound + Stick', desc: 'Salto lateral y estabilización 1–2 s.', obj: 'Potencia lateral y control', diff: 2, mat: 'Espacio seguro, mancuernas y conos', modes: ['1.- Sin Peso', '2.- Mancuernas peso bajo', '3.- Mancuernas peso medio'] },
+      { id: 'CF6', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Twist con disco', desc: 'Giro del disco de un lado al otro de la cintura en posición semi sentado en el piso.', obj: 'Fuerza rotacional del abdomen', diff: 2, mat: 'Espacio seguro y discos', modes: ['1.- Sin Peso', '2.- Disco peso bajo', '3.- Disco peso medio'] },
+      { id: 'CF7', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Plyo Push-Up', desc: 'Flexión explosiva pliométrica en escuadra.', obj: 'Potencia tren superior', diff: 2, mat: 'Espacio seguro', modes: ['1.- Sin Peso', '2.- Mancuernas peso bajo', '3.- Mancuernas peso medio'] },
+      { id: 'CF8', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Rotación con banda elástica', desc: 'Banda elástica; rotar desde cadera con tronco estable.', obj: 'Velocidad rotacional', diff: 2, mat: 'Bandas de resistencia', modes: ['1.- Liga resistencia baja', '2.- Liga resistencia media', '3.- Liga resistencia alta'] },
+      { id: 'CF9', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Anti-Rotation Pallof', desc: 'Resistir rotación con banda o máquina de polea.', obj: 'Estabilidad de core', diff: 2, mat: 'Bandas de resistencia o máquina polea', modes: ['1.- Liga resistencia baja', '2.- Liga resistencia media', '3.- Liga resistencia alta'] },
+      { id: 'CF10', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Variación de pesos del bat', desc: 'Alternar swing con diferentes pesos de bat de manera descendente y ascendente.', obj: 'Velocidad de bate y fuerza específica', diff: 3, mat: 'Bat diferentes pesos, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'CF11', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Sprint 10–20 m', desc: 'Aceleraciones cortas con descanso completo.', obj: 'Potencia neuromuscular', diff: 2, mat: 'Espacio seguro, conos', modes: ['1.- 6 rep. De 10 mt', '2.- 8 rep. De 15 mt', '3.- 10 rep de 20 mt'] },
+
+      // 5. Táctica y Mentalidad (TM)
+      { id: 'TM1', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Mapa de 9 Zonas de ataque', desc: 'Definir zonas verde/amarillo/rojo y plan de ataque de golpeo solo a la zona indicada.', obj: 'Selección de pitcheo', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { id: 'TM2', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Enfoque basado en conteo', desc: 'Simular 0-0, 1-0, 0-2, 2-1, 3-2 con objetivo distinto.', obj: 'Plan por conteo', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM3', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Batazo situacional', desc: 'Simular situación de Corredor 3B <2 outs, squeeze play, mover corredor, fly de sacrificio.', obj: 'Ejecución táctica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM4', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Generar tarjeta de tendencia', desc: 'Antes del turno: tendencia pitcher, zona objetivo, plan B.', obj: 'Preparación estratégica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM5', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Bateo con consecuencia', desc: 'Generar presión, asignar castigo o reto a malos contactos.', obj: 'Rendimiento bajo presión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM6', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'RESET', desc: 'Respiración + palabra clave + focalización entre pitcheos.', obj: 'Regulación emocional', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM7', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Visualización previa al turno', desc: 'Visualizar pitcheo objetivo y contacto antes de cada ronda de bateo.', obj: 'Preparación mental', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM8', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Swing a zona caliente', desc: 'Simular conteo a favor y solo hacer swing a zona fuerte del bateador.', obj: 'Preparación estratégica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM9', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Turno con 2 strikes', desc: 'Fouls, toques correctos y contacto competitivo con 2 strikes.', obj: 'Resiliencia y ajuste', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
+      { id: 'TM10', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Lectura anticipada vs real', desc: 'Comparar plan anticipado con lectura real; registrar aciertos.', obj: 'Disciplina cognitiva', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] }
+    ];
+
+    const VOLUME_MATRIX = {
+      'infantil': {
+        'Principiante': { totalSwings: 80, dist: { TP: { pct: 40, series: 4, reps: 8 }, O: { pct: 30, series: 3, reps: 8 }, T: { pct: 20, series: 2, reps: 8 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 8 } } },
+        'Intermedio':   { totalSwings: 100, dist: { TP: { pct: 20, series: 2, reps: 10 }, O: { pct: 20, series: 2, reps: 10 }, T: { pct: 30, series: 3, reps: 10 }, CF: { pct: 10, series: 1, reps: 10 }, TM: { pct: 20, series: 2, reps: 10 } } },
+        'Avanzado':     { totalSwings: 120, dist: { TP: { pct: 10, series: 1, reps: 12 }, O: { pct: 10, series: 1, reps: 12 }, T: { pct: 30, series: 3, reps: 12 }, CF: { pct: 20, series: 2, reps: 12 }, TM: { pct: 30, series: 3, reps: 12 } } }
+      },
+      'junior': {
+        'Principiante': { totalSwings: 100, dist: { TP: { pct: 40, series: 4, reps: 10 }, O: { pct: 30, series: 3, reps: 10 }, T: { pct: 20, series: 2, reps: 10 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 10 } } },
+        'Intermedio':   { totalSwings: 120, dist: { TP: { pct: 20, series: 2, reps: 12 }, O: { pct: 20, series: 2, reps: 12 }, T: { pct: 30, series: 3, reps: 12 }, CF: { pct: 10, series: 1, reps: 12 }, TM: { pct: 20, series: 2, reps: 12 } } },
+        'Avanzado':     { totalSwings: 150, dist: { TP: { pct: 10, series: 1, reps: 15 }, O: { pct: 10, series: 1, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 20, series: 2, reps: 15 }, TM: { pct: 30, series: 3, reps: 15 } } }
+      },
+      'juvenil': {
+        'Principiante': { totalSwings: 120, dist: { TP: { pct: 40, series: 4, reps: 12 }, O: { pct: 30, series: 3, reps: 12 }, T: { pct: 20, series: 2, reps: 12 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 12 } } },
+        'Intermedio':   { totalSwings: 150, dist: { TP: { pct: 20, series: 2, reps: 15 }, O: { pct: 20, series: 2, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 10, series: 1, reps: 15 }, TM: { pct: 20, series: 2, reps: 15 } } },
+        'Avanzado':     { totalSwings: 180, dist: { TP: { pct: 10, series: 1, reps: 18 }, O: { pct: 10, series: 1, reps: 18 }, T: { pct: 30, series: 3, reps: 18 }, CF: { pct: 20, series: 2, reps: 18 }, TM: { pct: 30, series: 3, reps: 18 } } }
+      },
+      'adulto': {
+        'Principiante': { totalSwings: 120, dist: { TP: { pct: 40, series: 4, reps: 12 }, O: { pct: 30, series: 3, reps: 12 }, T: { pct: 20, series: 2, reps: 12 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 12 } } },
+        'Intermedio':   { totalSwings: 150, dist: { TP: { pct: 20, series: 2, reps: 15 }, O: { pct: 20, series: 2, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 10, series: 1, reps: 15 }, TM: { pct: 20, series: 2, reps: 15 } } },
+        'Avanzado':     { totalSwings: 180, dist: { TP: { pct: 10, series: 1, reps: 18 }, O: { pct: 10, series: 1, reps: 18 }, T: { pct: 30, series: 3, reps: 18 }, CF: { pct: 20, series: 2, reps: 18 }, TM: { pct: 30, series: 3, reps: 18 } } }
+      }
+    };
+
+    const MOTIVATIONAL_QUOTES = [
+      "El béisbol es un juego de fallos; quien mejor gestiona la frustración es quien levanta el trofeo.",
+      "No entrenes hasta que te salga bien. Entrena hasta que no te pueda salir mal.",
+      "El swing perfecto nace en la preparación mental antes de pisar el cajón de bateo.",
+      "En el béisbol, el esfuerzo de hoy se convierte en el cuadrangular del mañana.",
+      "Controla tu mente, domina tu zona de strike y la pelota se encargará del resto."
+    ];
+
+    function App() {
+      const [isAuthenticated, setIsAuthenticated] = useState(false);
+      const [userEmail, setUserEmail] = useState('');
+      const [userPassword, setUserPassword] = useState('');
+      const [activeTab, setActiveTab] = useState('generator');
+
+      // Form Options
+      const [ageCategory, setAgeCategory] = useState('junior');
+      const [experienceLevel, setExperienceLevel] = useState('Principiante');
+      const [availableMinutes, setAvailableMinutes] = useState(30);
+
+      // Target Objectives State
+      const [selectedObjectives, setSelectedObjectives] = useState([
+        '1. Técnica y propiocepción',
+        '2. Óculo-manual y reconocimiento',
+        '3. Timing',
+        '4. Capacidades físicas',
+        '5. Táctica y mentalidad'
+      ]);
+
+      // Session State
+      const [currentSession, setCurrentSession] = useState(null);
+      const [completedBlockIds, setCompletedBlockIds] = useState([]);
+      const [randomQuote, setRandomQuote] = useState(MOTIVATIONAL_QUOTES[0]);
+      const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+      const routineRef = useRef(null);
+
+      const toggleObjective = (objName) => {
+        if (selectedObjectives.includes(objName)) {
+          if (selectedObjectives.length > 1) {
+            setSelectedObjectives(selectedObjectives.filter(o => o !== objName));
+          }
+        } else {
+          if (selectedObjectives.length < 5) {
+            setSelectedObjectives([...selectedObjectives, objName]);
+          }
+        }
+      };
+
+      const selectAllObjectives = () => {
+        setSelectedObjectives([
+          '1. Técnica y propiocepción',
+          '2. Óculo-manual y reconocimiento',
+          '3. Timing',
+          '4. Capacidades físicas',
+          '5. Táctica y mentalidad'
+        ]);
+      };
+
+      const toggleDrillCompletion = (blockIndex) => {
+        if (completedBlockIds.includes(blockIndex)) {
+          setCompletedBlockIds(completedBlockIds.filter(id => id !== blockIndex));
+        } else {
+          setCompletedBlockIds([...completedBlockIds, blockIndex]);
+        }
+      };
+
+      const generateSession = () => {
+        const categoryData = VOLUME_MATRIX[ageCategory] || VOLUME_MATRIX['junior'];
+        const matrixConfig = categoryData[experienceLevel] || categoryData['Principiante'];
+
+        let adjustedTotalSwings = matrixConfig.totalSwings;
+
+        const levelModeMap = { 'Principiante': 0, 'Intermedio': 1, 'Avanzado': 2 };
+        const modeIndex = levelModeMap[experienceLevel] !== undefined ? levelModeMap[experienceLevel] : 0;
+        const targetDiff = modeIndex + 1;
+
+        const areaKeyMap = {
+          '1. Técnica y propiocepción': 'TP',
+          '2. Óculo-manual y reconocimiento': 'O',
+          '3. Timing': 'T',
+          '4. Capacidades físicas': 'CF',
+          '5. Táctica y mentalidad': 'TM'
+        };
+
+        const selectedAreaKeys = selectedObjectives.map(o => areaKeyMap[o]);
+
+        let totalPctSelected = 0;
+        selectedAreaKeys.forEach(key => {
+          let p = matrixConfig.dist[key] ? matrixConfig.dist[key].pct : 0;
+          totalPctSelected += p;
+        });
+
+        if (totalPctSelected === 0) totalPctSelected = 1;
+
+        const TARGET_BLOCK_COUNT = 5;
+        let blocks = [];
+        let usedDrillIds = new Set();
+        let calculatedSwingsSum = 0;
+
+        let slots = [];
+        for (let i = 0; i < TARGET_BLOCK_COUNT; i++) {
+          slots.push(selectedAreaKeys[i % selectedAreaKeys.length]);
+        }
+
+        slots.forEach((areaKey) => {
+          let origAreaInfo = matrixConfig.dist[areaKey] || { pct: 20, series: 2, reps: 10 };
+          let origPct = origAreaInfo.pct > 0 ? origAreaInfo.pct : (100 / selectedAreaKeys.length);
+          
+          let areaWeight = (origPct / totalPctSelected) / (TARGET_BLOCK_COUNT / selectedAreaKeys.length);
+          let blockSwingsTarget = Math.round(adjustedTotalSwings * areaWeight);
+
+          let repsPerSet = origAreaInfo.reps > 0 ? origAreaInfo.reps : 10;
+          let calculatedSeries = Math.max(1, Math.round(blockSwingsTarget / repsPerSet));
+          let blockReps = calculatedSeries * repsPerSet;
+
+          calculatedSwingsSum += blockReps;
+
+          let eligible = DRILLS_DATABASE.filter(d => d.areaKey === areaKey && !usedDrillIds.has(d.id));
+          
+          let filtered = eligible.filter(d => d.diff === targetDiff);
+          if (filtered.length === 0) filtered = eligible;
+          if (filtered.length === 0) filtered = DRILLS_DATABASE.filter(d => d.areaKey === areaKey);
+
+          let chosenDrill = filtered[Math.floor(Math.random() * filtered.length)] || DRILLS_DATABASE[0];
+          usedDrillIds.add(chosenDrill.id);
+
+          let modeText = chosenDrill.modes[modeIndex] || chosenDrill.modes[0];
+
+          blocks.push({
+            id: chosenDrill.id,
+            name: chosenDrill.name,
+            areaKey: areaKey,
+            area: chosenDrill.area,
+            desc: chosenDrill.desc,
+            objective: chosenDrill.obj,
+            material: chosenDrill.mat,
+            mode: modeText,
+            series: calculatedSeries,
+            repsPerSeries: repsPerSet,
+            pct: Math.round(areaWeight * 100),
+            reps: blockReps
+          });
+        });
+
+        const newSession = {
+          ageCategory,
+          experienceLevel,
+          availableMinutes,
+          totalSwings: calculatedSwingsSum,
+          selectedCount: selectedObjectives.length,
+          blocks
+        };
+
+        setCurrentSession(newSession);
+        setCompletedBlockIds([]);
+        setActiveTab('session');
+      };
+
+      const handleSendWhatsAppPDF = async () => {
+        if (!currentSession || !routineRef.current) return;
+        setIsGeneratingPdf(true);
+
+        try {
+          // Prepare clean element for PDF export
+          const element = routineRef.current;
+          const opt = {
+            margin:       [10, 10, 10, 10],
+            filename:     `Rutina_Bateo_Beisbolpower_${currentSession.ageCategory}_${currentSession.experienceLevel}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0f172a' },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+
+          // Generate PDF and trigger browser download
+          if (window.html2pdf) {
+            await window.html2pdf().set(opt).from(element).save();
+          }
+
+          // Build WhatsApp Pre-filled Summary Message
+          const summaryText = 
+            `⚾ *BEISBOLPOWER INTELIGENTE - RUTINA DE BATEO* ⚾\n\n` +
+            `👤 *Categoría:* ${currentSession.ageCategory.toUpperCase()} (${currentSession.experienceLevel})\n` +
+            `⏱️ *Tiempo Estimado:* ${currentSession.availableMinutes} min\n` +
+            `🎯 *Volumen Recomendado:* ${currentSession.totalSwings} Swings Totales\n\n` +
+            `📋 *EJERCICIOS ASIGNADOS:*\n` +
+            currentSession.blocks.map((b, i) => `${i + 1}. *${b.name}* (${b.areaKey})\n   └ 🔄 ${b.series} series x ${b.repsPerSeries} reps (${b.reps} swings)\n   └ ⚙️ ${b.mode}`).join('\n\n') +
+            `\n\n📄 *Nota:* Se ha descargado tu archivo PDF con el plan gráfico completo. Adjúntalo en esta conversación.`;
+
+          const encodedMessage = encodeURIComponent(summaryText);
+          const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+
+          setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+            setIsGeneratingPdf(false);
+          }, 800);
+
+        } catch (error) {
+          console.error("Error al generar PDF:", error);
+          setIsGeneratingPdf(false);
+        }
+      };
+
+      const handleLogin = (e) => {
+        e.preventDefault();
+        if (userEmail.trim()) setIsAuthenticated(true);
+      };
+
+      const generateNewQuote = () => {
+        const nextQuote = MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
+        setRandomQuote(nextQuote);
+      };
+
+      if (!isAuthenticated) {
+        return (
+          <div className="flex-1 flex flex-col justify-center items-center p-6 text-slate-100 relative overflow-hidden">
+            <img 
+              src="https://images.unsplash.com/photo-1508344928928-7165b67de128?auto=format&fit=crop&w=1000&q=80" 
+              alt="Fondo Bateador" 
+              className="absolute inset-0 w-full h-full object-cover object-center opacity-35"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950"></div>
+
+            <div className="relative z-10 w-full max-w-xs text-center space-y-6">
+              
+              <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-tr from-red-600 via-orange-500 to-amber-400 rounded-3xl blur-md opacity-80 flame-animation"></div>
+                
+                <div className="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center shadow-2xl border border-amber-500/50 overflow-hidden">
+                  <i className="fas fa-fire absolute text-5xl text-orange-500/20 bottom-[-8px] scale-125"></i>
+
+                  <div className="relative flex items-center justify-center">
+                    <i className="fas fa-fire text-amber-400 text-3xl absolute -translate-y-1 translate-x-1 animate-pulse"></i>
+                    <i className="fas fa-baseball-bat-ball text-3xl text-white drop-shadow-[0_4px_8px_rgba(239,68,68,0.9)] transform -rotate-12"></i>
+                  </div>
+                </div>
+
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full animate-ping"></div>
+              </div>
+
+              <div>
+                <h1 className="text-2xl font-black tracking-tight text-white uppercase flex items-center justify-center gap-1">
+                  Beisbol<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-red-500">power</span>
+                </h1>
+                <p className="text-xs text-slate-400 font-medium mt-1 tracking-widest uppercase">INTELIGENTE • App de Bateo</p>
+                <div className="mt-2 inline-flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-full">
+                  <i className="fas fa-user-ninja text-amber-400 text-xs"></i>
+                  <span className="text-xs font-bold text-amber-300">Coach Julio Canché</span>
+                </div>
+              </div>
+
+              <form onSubmit={handleLogin} className="space-y-4 text-left backdrop-blur-md bg-slate-900/70 p-5 rounded-2xl border border-slate-800 shadow-xl">
+                <div>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Correo Atleta / Entrenador</label>
+                  <input 
+                    type="email" 
+                    required 
+                    value={userEmail} 
+                    onChange={e => setUserEmail(e.target.value)} 
+                    placeholder="coach@beisbolpower.com" 
+                    className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Contraseña</label>
+                  <input 
+                    type="password" 
+                    required 
+                    value={userPassword} 
+                    onChange={e => setUserPassword(e.target.value)} 
+                    placeholder="••••••••" 
+                    className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500 mt-1"
+                  />
+                </div>
+                <button type="submit" className="w-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black py-3.5 rounded-xl shadow-lg transition-all active:scale-95 text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                  <i className="fas fa-fire text-amber-300"></i> Ingresar a la App
+                </button>
+              </form>
+            </div>
+          </div>
+        );
+      }
+
+      const totalBlocks = currentSession ? currentSession.blocks.length : 0;
+      const completedBlocksCount = completedBlockIds.length;
+      const progressPercent = totalBlocks > 0 ? Math.round((completedBlocksCount / totalBlocks) * 100) : 0;
+
+      const completedSwings = currentSession 
+        ? currentSession.blocks.reduce((acc, block, idx) => completedBlockIds.includes(idx) ? acc + block.reps : acc, 0)
+        : 0;
+
+      return (
+        <div className="flex-1 flex flex-col h-full bg-slate-900 text-slate-100 overflow-hidden relative">
+          
+          {/* Header Banner */}
+          <div className="relative h-24 bg-slate-950 shrink-0 overflow-hidden border-b border-slate-800 no-print">
+            <img 
+              src="https://images.unsplash.com/photo-1508344928928-7165b67de128?auto=format&fit=crop&w=800&q=80" 
+              alt="Bateador" 
+              className="absolute inset-0 w-full h-full object-cover opacity-30"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
+            <div className="relative p-4 flex justify-between items-end h-full">
+              <div>
+                <div className="flex items-center gap-1.5 text-orange-500">
+                  <i className="fas fa-baseball-bat-ball text-[10px]"></i>
+                  <span className="text-[10px] font-black tracking-widest uppercase">Coach Julio Canché • Beisbolpower</span>
+                </div>
+                <h1 className="text-lg font-black text-white leading-tight">BEISBOLPOWER INTELIGENTE</h1>
+              </div>
+              <button 
+                onClick={() => setIsAuthenticated(false)} 
+                className="text-slate-400 hover:text-white text-xs p-1 flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-700/60"
+              >
+                <i className="fas fa-sign-out-alt"></i>
+                <span className="font-bold text-[10px] uppercase">Salir</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Scrollable Container */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-hide pb-20">
+
+            {/* TAB 1: DIAGNÓSTICO */}
+            {activeTab === 'generator' && (
+              <div className="space-y-5">
+                <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700/60 shadow-lg space-y-4">
+                  <h2 className="text-sm font-bold uppercase tracking-wider text-orange-400 flex items-center gap-2">
+                    <i className="fas fa-sliders"></i> Diagnóstico de Sesión
+                  </h2>
+
+                  {/* Categoría de Edad */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-300 uppercase block mb-1">Categoría de Edad</label>
+                    <select 
+                      value={ageCategory} 
+                      onChange={e => setAgeCategory(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white focus:border-orange-500 focus:outline-none"
+                    >
+                      <option value="infantil">Infantil (8 – 12 años)</option>
+                      <option value="junior">Junior (13 – 16 años)</option>
+                      <option value="juvenil">Juvenil (17 – 20 años)</option>
+                      <option value="adulto">Adulto (Mayor a 21 años)</option>
+                    </select>
+                  </div>
+
+                  {/* Nivel de Experiencia */}
+                  <div>
+                    <label className="text-xs font-bold text-slate-300 uppercase block mb-1">Nivel de Experiencia</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['Principiante', 'Intermedio', 'Avanzado'].map(lvl => (
+                        <button 
+                          key={lvl}
+                          type="button"
+                          onClick={() => setExperienceLevel(lvl)}
+                          className={`p-2.5 rounded-xl border text-xs font-bold transition-all ${
+                            experienceLevel === lvl 
+                            ? 'bg-gradient-to-r from-red-600 to-orange-500 border-transparent text-white' 
+                            : 'bg-slate-900 border-slate-700 text-slate-400'
+                          }`}
+                        >
+                          {lvl}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Tiempo Disponible */}
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="text-xs font-bold text-slate-300 uppercase">Tiempo Disponible</label>
+                      <span className="text-xs font-black text-orange-400">{availableMinutes} Minutos</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      min="15" 
+                      max="60" 
+                      step="15" 
+                      value={availableMinutes}
+                      onChange={e => setAvailableMinutes(parseInt(e.target.value))}
+                      className="w-full accent-orange-500 bg-slate-900 rounded-lg cursor-pointer"
+                    />
+                  </div>
+
+                  {/* Selección de Hasta 5 Áreas de Objetivo */}
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="text-xs font-bold text-slate-300 uppercase">
+                        Áreas Objetivo <span className="text-orange-400 text-[10px]">({selectedObjectives.length}/5 seleccionadas)</span>
+                      </label>
+                      <button 
+                        type="button" 
+                        onClick={selectAllObjectives}
+                        className="text-[10px] font-bold text-orange-400 hover:text-orange-300 underline"
+                      >
+                        Elegir las 5
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {[
+                        '1. Técnica y propiocepción',
+                        '2. Óculo-manual y reconocimiento',
+                        '3. Timing',
+                        '4. Capacidades físicas',
+                        '5. Táctica y mentalidad'
+                      ].map(areaName => {
+                        const isSelected = selectedObjectives.includes(areaName);
+                        return (
+                          <button
+                            key={areaName}
+                            type="button"
+                            onClick={() => toggleObjective(areaName)}
+                            className={`w-full p-3 rounded-xl border text-left text-xs font-bold flex justify-between items-center transition-all ${
+                              isSelected 
+                              ? 'bg-gradient-to-r from-red-900/50 to-orange-900/50 border-orange-500 text-white' 
+                              : 'bg-slate-900 border-slate-700/80 text-slate-400'
+                            }`}
+                          >
+                            <span>{areaName}</span>
+                            <i className={`fas ${isSelected ? 'fa-check-circle text-orange-400' : 'fa-circle text-slate-700'}`}></i>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={generateSession}
+                    className="w-full bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 hover:opacity-95 text-white font-black py-4 rounded-xl shadow-xl uppercase tracking-wider text-sm flex items-center justify-center gap-2 mt-4"
+                  >
+                    <i className="fas fa-bolt"></i> Generar Rutina Personalizada
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: RUTINA GENERADA + MEDIDOR DE PROGRESO */}
+            {activeTab === 'session' && (
+              <div className="space-y-5">
+                {!currentSession ? (
+                  <div className="text-center py-12 bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6">
+                    <i className="fas fa-clipboard-list text-4xl text-slate-600 mb-3 block"></i>
+                    <p className="text-sm text-slate-400 font-medium">Aún no has generado una rutina de bateo.</p>
+                    <button onClick={() => setActiveTab('generator')} className="mt-4 bg-orange-500 text-white text-xs font-bold px-4 py-2 rounded-xl">
+                      Ir al Diagnóstico
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    
+                    {/* BOTÓN ENVIAR POR WHATSAPP EN PDF */}
+                    <div className="bg-slate-800/90 rounded-2xl p-3 border border-slate-700/80 shadow-md flex gap-2 no-print">
+                      <button 
+                        onClick={handleSendWhatsAppPDF}
+                        disabled={isGeneratingPdf}
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 px-4 rounded-xl shadow-lg transition-all active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+                      >
+                        {isGeneratingPdf ? (
+                          <>
+                            <i className="fas fa-spinner fa-spin text-sm"></i>
+                            <span>Generando PDF...</span>
+                          </>
+                        ) : (
+                          <>
+                            <i className="fab fa-whatsapp text-lg text-emerald-200"></i>
+                            <span>Enviar PDF por WhatsApp</span>
+                          </>
+                        )}
+                      </button>
+
+                      <button onClick={() => window.print()} className="bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-xl text-xs flex items-center justify-center shrink-0">
+                        <i className="fas fa-print"></i>
+                      </button>
+                    </div>
+
+                    {/* MEDIDOR DE PROGRESO DE LA SESIÓN */}
+                    <div className="bg-slate-800/90 rounded-2xl p-4 border border-slate-700/80 shadow-lg space-y-3">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <i className="fas fa-chart-line text-orange-400 text-sm"></i>
+                          <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">Progreso de la Sesión</span>
+                        </div>
+                        <span className="text-xs font-black text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-full border border-orange-500/30">
+                          {progressPercent}% Completado
+                        </span>
+                      </div>
+
+                      {/* Bar Container */}
+                      <div className="w-full bg-slate-950 rounded-full h-3 overflow-hidden border border-slate-700/80 p-0.5">
+                        <div 
+                          className="bg-gradient-to-r from-red-600 via-orange-500 to-emerald-400 h-full rounded-full transition-all duration-500 ease-out"
+                          style={{ width: `${progressPercent}%` }}
+                        ></div>
+                      </div>
+
+                      {/* Counter Stats */}
+                      <div className="flex justify-between items-center text-[11px] font-medium text-slate-400">
+                        <span>Ejercicios: <strong className="text-white font-bold">{completedBlocksCount}</strong> / {totalBlocks}</span>
+                        <span>Swings: <strong className="text-white font-bold">{completedSwings}</strong> / {currentSession.totalSwings}</span>
+                      </div>
+                    </div>
+
+                    {/* BANNER DE COMPLETADO TOTAL */}
+                    {progressPercent === 100 && (
+                      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border border-emerald-500/60 rounded-2xl p-4 text-center space-y-2 shadow-xl animate-fade-in">
+                        <i className="fas fa-trophy text-emerald-400 text-3xl animate-bounce"></i>
+                        <h3 className="text-sm font-black text-white uppercase tracking-wider">¡Sesión de Bateo Finalizada!</h3>
+                        <p className="text-xs text-emerald-300">¡Gran trabajo! Has completado exitosamente los {currentSession.totalSwings} swings de la rutina.</p>
+                      </div>
+                    )}
+
+                    {/* TARGET EXPORTABLE DE LA RUTINA (PDF CONTAINER) */}
+                    <div ref={routineRef} className="space-y-4 p-2 bg-slate-900 rounded-2xl">
+
+                      {/* Tarjeta de Volumen Ajustado */}
+                      <div className="bg-slate-800 rounded-2xl p-4 border border-slate-700/60 flex justify-between items-center shadow-md">
+                        <div>
+                          <span className="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Volumen Recomendado Ajustado</span>
+                          <h2 className="text-3xl font-black text-white">{currentSession.totalSwings} <span className="text-xs font-normal text-slate-400">Swings Totales</span></h2>
+                          <p className="text-[11px] text-slate-400 mt-1 capitalize">
+                            {currentSession.ageCategory} • {currentSession.experienceLevel} • {currentSession.selectedCount} Áreas
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Bloques de Ejercicios con Checkboxes de Conclusión */}
+                      <div className="space-y-3">
+                        {currentSession.blocks.map((block, idx) => {
+                          const isDone = completedBlockIds.includes(idx);
+                          return (
+                            <div 
+                              key={idx} 
+                              className={`border p-4 rounded-2xl space-y-3 transition-all ${
+                                isDone 
+                                ? 'bg-slate-950/80 border-emerald-500/50 opacity-90' 
+                                : 'bg-slate-800/60 border-slate-700/60'
+                              }`}
+                            >
+                              <div className="flex justify-between items-start gap-2">
+                                <div>
+                                  <span className="text-[10px] font-bold uppercase text-orange-400">{block.area}</span>
+                                  <h3 className={`text-sm font-bold ${isDone ? 'line-through text-slate-400' : 'text-white'}`}>
+                                    {block.name}
+                                  </h3>
+                                </div>
+                                
+                                <button
+                                  type="button"
+                                  onClick={() => toggleDrillCompletion(idx)}
+                                  className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all no-print ${
+                                    isDone 
+                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' 
+                                    : 'bg-slate-900 text-slate-400 border border-slate-700 hover:border-orange-500'
+                                  }`}
+                                >
+                                  <i className={`fas ${isDone ? 'fa-check-circle text-emerald-400' : 'fa-circle-notch'}`}></i>
+                                  <span>{isDone ? 'Completado' : 'Marcar listo'}</span>
+                                </button>
+                              </div>
+
+                              <p className="text-xs text-slate-300 leading-relaxed">{block.desc}</p>
+                              
+                              <div className="bg-slate-900/60 p-2.5 rounded-xl text-[11px] text-slate-300 space-y-1 border border-slate-800">
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="font-bold text-slate-400">Dosis de Swings:</span>
+                                  <span className="text-xs font-mono font-bold text-orange-400 bg-slate-950 px-2 py-0.5 rounded border border-orange-500/30">
+                                    {block.series} series x {block.repsPerSeries} reps ({block.reps} swings)
+                                  </span>
+                                </div>
+                                <div><strong className="text-slate-400">Modo de Ejecución:</strong> <span className="text-orange-300">{block.mode}</span></div>
+                                <div><strong className="text-slate-400">Objetivo:</strong> {block.objective}</div>
+                                <div><strong className="text-slate-400">Material:</strong> {block.material}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                    </div>
+
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 3: MENTALIDAD */}
+            {activeTab === 'quote' && (
+              <div className="space-y-4">
+                <div className="bg-slate-800/90 rounded-2xl p-6 border border-slate-700/60 text-center space-y-4 shadow-xl">
+                  <i className="fas fa-quote-left text-3xl text-orange-500/40"></i>
+                  <p className="text-base font-semibold text-white italic leading-relaxed">
+                    "{randomQuote}"
+                  </p>
+                  <button 
+                    onClick={generateNewQuote}
+                    className="bg-gradient-to-r from-red-600 to-orange-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs uppercase shadow-md"
+                  >
+                    <i className="fas fa-arrows-rotate mr-1"></i> Generar Otra Frase
+                  </button>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* Navigation Bar */}
+          <div className="absolute bottom-0 inset-x-0 bg-slate-950 border-t border-slate-800 px-3 py-2 flex justify-around items-center no-print">
+            <button 
+              onClick={() => setActiveTab('generator')}
+              className={`flex flex-col items-center gap-1 ${activeTab === 'generator' ? 'text-orange-500' : 'text-slate-500'}`}
+            >
+              <i className="fas fa-sliders text-base"></i>
+              <span className="text-[10px] font-bold">Diagnóstico</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('session')}
+              className={`flex flex-col items-center gap-1 ${activeTab === 'session' ? 'text-orange-500' : 'text-slate-500'}`}
+            >
+              <i className="fas fa-baseball-bat-ball text-base"></i>
+              <span className="text-[10px] font-bold">Rutina</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('quote')}
+              className={`flex flex-col items-center gap-1 ${activeTab === 'quote' ? 'text-orange-500' : 'text-slate-500'}`}
+            >
+              <i className="fas fa-brain text-base"></i>
+              <span className="text-[10px] font-bold">Mente</span>
+            </button>
+            <button 
+              onClick={() => setIsAuthenticated(false)}
+              className="flex flex-col items-center gap-1 text-slate-500 hover:text-red-400 transition-colors"
+            >
+              <i className="fas fa-right-from-bracket text-base"></i>
+              <span className="text-[10px] font-bold">Salir</span>
+            </button>
+          </div>
+
+        </div>
+      );
+    }
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
