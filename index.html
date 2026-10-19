@@ -66,85 +66,193 @@
 
     const DRILLS_DATABASE = [
       // 1. Técnica y Propiocepción (TP)
-      { id: 'TP1', areaKey: 'TP', area: '1. Técnica y propiocepción', name: '3 zonas adentro-centro-afuera', desc: 'Golpeo de bola en 3 ubicaciones; ajustar postura, trayectoria y punto de contacto.', obj: 'Propiocepción, cobertura de zona, punto de contacto (adentro, afuera y al centro).', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP2', areaKey: 'TP', area: '1. Técnica y propiocepción', name: '3 zonas arriba-en medio-abajo', desc: 'Alternar golpeo alto, medio y bajo sin cambiar intención de contacto fuerte.', obj: 'Adaptación y control del golpeo con el barril', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP3', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Swing 3 tiempos', desc: 'Iniciar con postura balanceada 1.-Carga 2.-Separa y 3.- Golpea', obj: 'Crear memoria muscular de la secuencia correcta del swing.', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP4', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Ángulo con PVC-Palo', desc: 'Abrazando un PVC o Palo de escoba 1.- carga y 2.-Gira golpeando la bola con el ángulo correcto', obj: 'Generar el ángulo correcto al batear', diff: 1, mat: 'PVC-Palo escoba, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP5', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Inicio de swing abierto', desc: 'Iniciar ligeramente abierto y mantener control del centro de masa girando el tronco con las manos simultáneamente', obj: 'Estabilidad y rotación sin desconectar', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP6', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Paso atrás', desc: 'Paso corto hacia atrás antes de cargar y atacar.', obj: 'Carga, ritmo, uso del suelo', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP7', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Camino y golpeo', desc: 'Entrada caminando controlada dos pasos al swing.', obj: 'Secuencia y transferencia de energía', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP8', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Bat corto con mano dominante', desc: 'Swings con bate corto usando mano superior; foco en contacto limpio.', obj: 'Ruta de manos y control del barril', diff: 1, mat: 'Bat corto, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP9', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Bat corto con mano inferior', desc: 'Swings con bate corto usando mano inferior; sin colapsar postura.', obj: 'Dirección del barril', diff: 1, mat: 'Bat corto, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP10', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Mantener manos atrás', desc: 'Sujetar el bat e iniciar el swing obligando a dejar las manos atrás hasta el momento preciso.', obj: 'Mantener el control de las manos atrás al realizar el swing', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
-      { id: 'TP11', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Swing por dentro con balón', desc: 'Sujetar un balón con los brazos al realizar el swing para evitar la extensión de las manos antes del impacto.', obj: 'Golpear la bola por dentro de ella evitando el rodeo.', diff: 1, mat: 'Balón, Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'] },
+      { 
+        id: 'TP1', areaKey: 'TP', area: '1. Técnica y propiocepción', name: '3 zonas adentro-centro-afuera', 
+        desc: 'Golpeo de bola en 3 ubicaciones; ajustar postura, trayectoria y punto de contacto.', 
+        obj: 'Propiocepción, cobertura de zona, punto de contacto (adentro, afuera y al centro).', 
+        diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'],
+        steps: [
+          'Coloca el tee en la zona interna (contacto adelantado), al centro (contacto frente al pie delantero) o afuera (contacto retrasado hacia la banda contraria).',
+          'Mantén el centro de gravedad estable durante la carga.',
+          'Ajusta la trayectoria de las manos proyectando el barril hacia el batazo según la ubicación.'
+        ],
+        focus: 'No barrer las manos en el lanzamiento adentro; dejar viajar la bola afuera.',
+        errorAvoid: 'Girar los hombros antes de tiempo queriendo halar el picheo de afuera.'
+      },
+      { 
+        id: 'TP2', areaKey: 'TP', area: '1. Técnica y propiocepción', name: '3 zonas arriba-en medio-abajo', 
+        desc: 'Alternar golpeo alto, medio y bajo sin cambiar intención de contacto fuerte.', 
+        obj: 'Adaptación y control del golpeo con el barril', 
+        diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'],
+        steps: [
+          'Ajusta la altura del tee a la rodilla (abajo), cintura (medio) y pecho/zona alta (arriba).',
+          'Flexiona las rodillas para bajar el plano del swing en pitcheos bajos, no dejes caer las manos.',
+          'En el picheo alto, mantén las manos arriba y la cabeza sobre el impacto.'
+        ],
+        focus: 'Ajuste biomecánico mediante la flexión de cadera y rodillas, no colapsando la postura.',
+        errorAvoid: 'Agacharse o soltar la postura del tronco en la bola baja.'
+      },
+      { 
+        id: 'TP3', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Swing 3 tiempos', 
+        desc: 'Iniciar con postura balanceada 1.-Carga 2.-Separa y 3.- Golpea', 
+        obj: 'Crear memoria muscular de la secuencia correcta del swing.', 
+        diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'],
+        steps: [
+          'Tiempo 1 (Carga): Traslada el peso hacia la pierna trasera con ligera rotación interna de cadera.',
+          'Tiempo 2 (Separación): Avanza con el pie delantero mientras las manos se mantienen firmes atrás.',
+          'Tiempo 3 (Impacto): Transfiere la energía desde el suelo girando la cadera y acelerando el barril.'
+        ],
+        focus: 'Ritmo, pausa en la separación y transferencia cinética en el impacto.',
+        errorAvoid: 'Arrastrar las manos hacia adelante al dar el paso (perder separación).'
+      },
+      { 
+        id: 'TP4', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Ángulo con PVC-Palo', 
+        desc: 'Abrazando un PVC o Palo de escoba 1.- carga y 2.-Gira golpeando la bola con el ángulo correcto', 
+        obj: 'Generar el ángulo correcto al batear', 
+        diff: 1, mat: 'PVC-Palo escoba, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'],
+        steps: [
+          'Sostén el tubo de PVC sobre el pecho/hombros abrazándolo con ambos brazos.',
+          'Adopta la postura de bateo y realiza la carga.',
+          'Gira el tronco haciendo que la punta del tubo simule la línea del plano del bate hacia la bola.'
+        ],
+        focus: 'Inclinación de la columna y rotación limpia de hombros en el plano del picheo.',
+        errorAvoid: 'Rotar plano horizontalmente perdiendo la inclinación atlética de los hombros.'
+      },
+      { 
+        id: 'TP5', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Inicio de swing abierto', 
+        desc: 'Iniciar ligeramente abierto y mantener control del centro de masa girando el tronco con las manos simultáneamente', 
+        obj: 'Estabilidad y rotación sin desconectar', 
+        diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'],
+        steps: [
+          'Abre la postura (pie delantero ligeramente abierto respecto al home plate).',
+          'Mantén las manos conectadas con la estructura del tronco superior.',
+          'Inicia la rotación sincronizada usando la cadera trasera para cerrar el plano de impacto.'
+        ],
+        focus: 'Evitar la desconexión del brazo trasero durante el ataque.',
+        errorAvoid: 'Hacer el swing solo con los brazos sin tracción de la pierna trasera.'
+      },
+      { id: 'TP6', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Paso atrás', desc: 'Paso corto hacia atrás antes de cargar y atacar.', obj: 'Carga, ritmo, uso del suelo', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'], steps: ['Da un paso controlado con el pie trasero.', 'Consolida el peso en el talón trasero.', 'Explota hacia adelante manteniendo balance.'], focus: 'Cargar el peso en el plano interno del muslo trasero.', errorAvoid: 'Perder el equilibrio inclinándose hacia atrás.' },
+      { id: 'TP7', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Camino y golpeo', desc: 'Entrada caminando controlada dos pasos al swing.', obj: 'Secuencia y transferencia de energía', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'], steps: ['Da dos pasos fluidos hacia la caja de bateo.', 'Sincroniza la caída del pie delantero con el inicio de la rotación.', 'Lanza las manos con potencia.'], focus: 'Transferencia continua de inercia y ritmo.', errorAvoid: 'Detener el impulso al momento de pisar.' },
+      { id: 'TP8', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Bat corto con mano dominante', desc: 'Swings con bate corto usando mano superior; foco en contacto limpio.', obj: 'Ruta de manos y control del barril', diff: 1, mat: 'Bat corto, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'], steps: ['Toma el bat solo con la mano dominante.', 'Mantén el codo alineado y directo al picheo.', 'Impacta con palma hacia arriba (palm-up).'], focus: 'Ruta directa de las manos sin rodear la pelota.', errorAvoid: 'Dejar caer la cabeza del bat.' },
+      { id: 'TP9', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Bat corto con mano inferior', desc: 'Swings con bate corto usando mano inferior; sin colapsar postura.', obj: 'Dirección del barril', diff: 1, mat: 'Bat corto, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'], steps: ['Toma el bat solo con la mano guía (inferior).', 'Conduce la perilla hacia la bola.', 'Mantén firme la muñeca en el impacto.'], focus: 'Guiar el barril a través de la zona de strike.', errorAvoid: 'Perder el control y soltar la muñeca antes de tiempo.' },
+      { id: 'TP10', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Mantener manos atrás', desc: 'Sujetar el bat e iniciar el swing obligando a dejar las manos atrás hasta el momento preciso.', obj: 'Mantener el control de las manos atrás al realizar el swing', diff: 1, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'], steps: ['Realiza la pisada hacia adelante exagerando la separación.', 'Verifica que las manos permanezcan junto al hombro trasero.', 'Desata las manos en el último instante.'], focus: 'Retención de las manos para generar efecto de liga (torque).', errorAvoid: 'Llevar los hombros y manos hacia el frente con la pisada.' },
+      { id: 'TP11', areaKey: 'TP', area: '1. Técnica y propiocepción', name: 'Swing por dentro con balón', desc: 'Sujetar un balón con los brazos al realizar el swing para evitar la extensión de las manos antes del impacto.', obj: 'Golpear la bola por dentro de ella evitando el rodeo.', diff: 1, mat: 'Balón, Bate, tee, pelotas, red/jaula', modes: ['1.-Tee Ball', '2.- Soft toss', '3.- Front toss o BP'], steps: ['Coloca un balón pequeño apresado entre los antebrazos/pecho.', 'Efectúa la rotación del swing sin dejar caer el balón hasta el impacto.', 'Mantén la estructura estrecha y compacta.'], focus: 'Mantener codos juntos y barril dentro de la trayectoria.', errorAvoid: 'Abrir los codos prematuramente.' },
 
       // 2. Óculo-manual y reconocimiento (O)
-      { id: 'O1', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Pelota de tenis pared', desc: 'Rebotar/recibir pelota de tenis y progresar a swing o toque.', obj: 'Reacción y seguimiento visual', diff: 1, mat: 'Pelota de tenis, bat, red/jaula', modes: ['1.-Vs Pared', '2.- Soft toss con rebote', '3.- Front toss o Bp con rebote'] },
-      { id: 'O2', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Bolas marcadas', desc: 'Pelotas con colores/números; identificar antes de decidir swing.', obj: 'Reconocimiento visual y decisión', diff: 2, mat: 'Pelotas marcadas con colores/números, bat, jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'O3', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Golpeo de objetos pequeños', desc: 'Golpear mini pelotas u objetos pequeños.', obj: 'Precisión visual y bat-a-bola', diff: 2, mat: 'Bate, pelotas pequeñas, palo, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'O4', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Dos bolas a la vez', desc: 'Coach muestra y lanza dos bolas e indica una para golpear.', obj: 'Selección y reacción', diff: 2, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.- 2 Tball', '2.-Soft toss', '3.- Front toss'] },
-      { id: 'O5', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Cantar lanzamiento bola o strike', desc: 'Se lanza la bola y el bateador identifica y canta si es bola o strike.', obj: 'Disciplina de zona', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'O6', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Identificar lanzamiento antes de golpear', desc: 'Alternar recta y rompiente; cantar tipo de lanzamiento antes del swing.', obj: 'Lectura de trayectoria', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'O7', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'BP live', desc: 'Realizar enfrentamiento real de un turno al bat, con diferentes lanzamientos.', obj: 'Adaptabilidad y decisión', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'] },
-      { id: 'O8', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Coordinación para golpear', desc: 'Asignar indicador a cada mano y al lanzar la bola, golpear con la mano indicada.', obj: 'Coordinación y decisión', diff: 2, mat: 'Bats cortos, pelotas tenis, red/jaula', modes: ['1.- 2 Tball', '2.-Soft toss', '3.- Front toss'] },
-      { id: 'O9', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Visión + Contacto Competencia', desc: 'Puntos por decisión correcta según zona y tipo del lanzamiento + contacto fuerte.', obj: 'Integración visión-decisión-ejecución', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
+      { 
+        id: 'O1', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Pelota de tenis pared', 
+        desc: 'Rebotar/recibir pelota de tenis y progresar a swing o toque.', 
+        obj: 'Reacción y seguimiento visual', 
+        diff: 1, mat: 'Pelota de tenis, bat, red/jaula', modes: ['1.-Vs Pared', '2.- Soft toss con rebote', '3.- Front toss o Bp con rebote'],
+        steps: [
+          'Lanza la pelota de tenis contra la pared con bote.',
+          'Sigue la trayectoria con la mirada fija en las costuras/marca de la pelota.',
+          'Haz el swing o toquecito justo en el momento del rebote deseado.'
+        ],
+        focus: 'Coordinación ojo-mano y enfoque en el punto de bote.',
+        errorAvoid: 'Levantar la cabeza antes del contacto.'
+      },
+      { id: 'O2', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Bolas marcadas', desc: 'Pelotas con colores/números; identificar antes de decidir swing.', obj: 'Reconocimiento visual y decisión', diff: 2, mat: 'Pelotas marcadas con colores/números, bat, jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['El lanzador usa pelotas marcadas con números o colores.', 'Identifica la marca mientras la bola viene en el aire.', 'Canta en voz alta el color/número justo antes del golpeo.'], focus: 'Focalización fina y velocidad de procesamiento visual.', errorAvoid: 'Adivinar o cantar después del impacto.' },
+      { id: 'O3', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Golpeo de objetos pequeños', desc: 'Golpear mini pelotas u objetos pequeños.', obj: 'Precisión visual y bat-a-bola', diff: 2, mat: 'Bate, pelotas pequeñas, palo, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Usa mini pelotas o tapas de plástico.', 'Alinea el centro del dulce/barril con precisión milimétrica.', 'Asegura un swing centrado.'], focus: 'Concentración extrema en el punto de contacto.', errorAvoid: 'Hacer swings descontrolados por aceleración.' },
+      { id: 'O4', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Dos bolas a la vez', desc: 'Coach muestra y lanza dos bolas e indica una para golpear.', obj: 'Selección y reacción', diff: 2, mat: 'Bate, tee, pelotas, red/jaula', modes: ['1.- 2 Tball', '2.-Soft toss', '3.- Front toss'], steps: ['El coach lanza dos pelotas simultáneamente a distintas alturas.', 'En pleno vuelo, el coach canta "Arriba" o "Abajo".', 'Reacciona atacando únicamente la bola ordenada.'], focus: 'Toma de decisión de última fracción de segundo.', errorAvoid: 'Comprometer el swing antes de escuchar la orden.' },
+      { id: 'O5', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Cantar lanzamiento bola o strike', desc: 'Se lanza la bola y el bateador identifica y canta si es bola o strike.', obj: 'Disciplina de zona', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Lanzamiento en vivo a velocidad media/alta.', 'Lee la trayectoria en los primeros 10-15 pies de vuelo.', 'Grita "Strike" y realiza swing, o "Bola" y aguanta la carga.'], focus: 'Reconocimiento temprano de la zona de strike.', errorAvoid: 'Hacer swing a lanzamientos fuera de zona por ansiedad.' },
+      { id: 'O6', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Identificar lanzamiento antes de golpear', desc: 'Alternar recta y rompiente; cantar tipo de lanzamiento antes del swing.', obj: 'Lectura de trayectoria', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Observa el punto de soltura (release point) del lanzador.', 'Detecta la rotación o velocidad de la bola.', 'Nombra el tipo de picheo mientras ejecutas la mecánica.'], focus: 'Detección del spin y punto de salida del pitcheo.', errorAvoid: 'Caerse hacia adelante con lanzamientos lentos.' },
+      { id: 'O7', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'BP live', desc: 'Realizar enfrentamiento real de un turno al bat, con diferentes lanzamientos.', obj: 'Adaptabilidad y decisión', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'], steps: ['Enfrentamiento real con conteo de pitcheos.', 'Estructura tu plan de bateo de acuerdo al conteo.', 'Ataca los pitcheos en tu zona de fortaleza.'], focus: 'Simulación real de competencia bajo presión.', errorAvoid: 'Batear sin un plan o estrategia en mente.' },
+      { id: 'O8', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Coordinación para golpear', desc: 'Asignar indicador a cada mano y al lanzar la bola, golpear con la mano indicada.', obj: 'Coordinación y decisión', diff: 2, mat: 'Bats cortos, pelotas tenis, red/jaula', modes: ['1.- 2 Tball', '2.-Soft toss', '3.- Front toss'], steps: ['Sostén un bat corto en cada mano.', 'El coach lanza la bola y da una señal de derecha o izquierda.', 'Ataca de inmediato con el brazo seleccionado.'], focus: 'Independencia motriz y velocidad de reacción.', errorAvoid: 'Mover ambos brazos al mismo tiempo.' },
+      { id: 'O9', areaKey: 'O', area: '2. Óculo-manual y reconocimiento', name: 'Visión + Contacto Competencia', desc: 'Puntos por decisión correcta según zona y tipo del lanzamiento + contacto fuerte.', obj: 'Integración visión-decisión-ejecución', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Acumula puntos: +1 por buena decisión de zona, +2 por contacto macizo.', 'Evita swings a pitcheos dudosos.', 'Mide tu desempeño global en rondas de 10 picheos.'], focus: 'Calidad del contacto combinada con selección de picheo.', errorAvoid: 'Celebrar contactos débiles fuera de zona.' },
 
       // 3. Timing (T)
-      { id: 'T1', areaKey: 'T', area: '3. Timing', name: 'Sincronización de la carga con el pitcher', desc: 'Inicia carga con movimiento clave del lanzador (separación de la bola del guante en el windup).', obj: 'Sincronización inicial', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'T2', areaKey: 'T', area: '3. Timing', name: 'Variación del toss', desc: 'Realizar variación de las velocidades del lanzamiento.', obj: 'Ritmo y ajustabilidad', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'T3', areaKey: 'T', area: '3. Timing', name: 'Pausar la carga y golpear', desc: 'Pausa breve en la carga y golpea a la indicación.', obj: 'Separar preparación de decisión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'T4', areaKey: 'T', area: '3. Timing', name: 'Variación de distancias', desc: 'Acercar/alejar lanzador manteniendo velocidad aparente variable.', obj: 'Ajuste temporal', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'T5', areaKey: 'T', area: '3. Timing', name: 'Progresión de lanzamientos baja a alta velocidad', desc: 'Series progresivas de baja a alta velocidad.', obj: 'Ventana de decisión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'T6', areaKey: 'T', area: '3. Timing', name: 'Mezcla de lanzamientos', desc: 'Mezclar recta/cambio/rompiente con objetivo de mantener postura.', obj: 'Mantener energía y esperar', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'T7', areaKey: 'T', area: '3. Timing', name: 'Drill de decisión', desc: 'Mantener el swing hasta recibir indicación o estímulo para retrasar lo más posible el impacto.', obj: 'Decisión tardía eficiente', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'T8', areaKey: 'T', area: '3. Timing', name: 'Drill de BP live en juego', desc: 'Simulación de partido en vivo con catcher, lanzador a distancia real y ampayer.', obj: 'Timing específico de juego', diff: 3, mat: 'Lanzador, catcher, pelotas, casco, jaula y bat', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'] },
-      { id: 'T9', areaKey: 'T', area: '3. Timing', name: 'Drill situacional 2 strikes', desc: 'Situación 2 strikes; reducir movimiento previo sin perder agresividad y defender la zona.', obj: 'Timing bajo presión', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'] },
+      { 
+        id: 'T1', areaKey: 'T', area: '3. Timing', name: 'Sincronización de la carga con el pitcher', 
+        desc: 'Inicia carga con movimiento clave del lanzador (separación de la bola del guante en el windup).', 
+        obj: 'Sincronización inicial', 
+        diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'],
+        steps: [
+          'Observa fijamente la mano del lanzador al romper el guante.',
+          'Inicia la carga suave y fluida al mismo tiempo que la bola sale del guante.',
+          'Llega a la posición de ataque justo cuando el pie del pitcher pisa el suelo.'
+        ],
+        focus: 'Ritmo sincronizado con el lanzador.',
+        errorAvoid: 'Cargar tarde y apresurar el paso hacia la bola.'
+      },
+      { id: 'T2', areaKey: 'T', area: '3. Timing', name: 'Variación del toss', desc: 'Realizar variación de las velocidades del lanzamiento.', obj: 'Ritmo y ajustabilidad', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['El coach alterna lanzamientos lentos, medios y rápidos sin aviso.', 'Mantén la carga firme y ajusta el ritmo de las manos.', 'Espera la pelota sin colapsar el cuerpo.'], focus: 'Capacidad de frenado y ajuste en picheos fuera de ritmo.', errorAvoid: 'Lanzar las manos antes de tiempo en pelotas lentas.' },
+      { id: 'T3', areaKey: 'T', area: '3. Timing', name: 'Pausar la carga y golpear', desc: 'Pausa breve en la carga y golpea a la indicación.', obj: 'Separar preparación de decisión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Carga y mantén la posición sosteniendo el balance durante 1 segundo.', 'Al escuchar "¡Ya!", explota con el swing.', 'Mantén el core tensionado en la pausa.'], focus: 'Control motor e independización de la carga con el swing.', errorAvoid: 'Perder tensión y desarmar la postura en la pausa.' },
+      { id: 'T4', areaKey: 'T', area: '3. Timing', name: 'Variación de distancias', desc: 'Acercar/alejar lanzador manteniendo velocidad aparente variable.', obj: 'Ajuste temporal', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['El lanzador se coloca a 20 pies, luego a 30 y finalmente a distancia real.', 'Adapta tu ventana de visión y tiempo de reacción.', 'Confía en la velocidad de tus manos.'], focus: 'Adaptación a distintas velocidades aparentes.', errorAvoid: 'Exagerar el paso ante distancias más cortas.' },
+      { id: 'T5', areaKey: 'T', area: '3. Timing', name: 'Progresión de lanzamientos baja a alta velocidad', desc: 'Series progresivas de baja a alta velocidad.', obj: 'Ventana de decisión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Inicia con 5 swings a velocidad suave para afinar ritmo.', 'Aumenta gradualmente hasta alcanzar velocidad máxima de juego.', 'Conserva la misma mecánica suave en todo momento.'], focus: 'Aceleración progresiva sin tensionar los hombros.', errorAvoid: 'Apretar el bate con demasiada fuerza al subir la velocidad.' },
+      { id: 'T6', areaKey: 'T', area: '3. Timing', name: 'Mezcla de lanzamientos', desc: 'Mezclar recta/cambio/rompiente con objetivo de mantener postura.', obj: 'Mantener energía y esperar', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Enfrenta pitcheos variados en secuencia aleatoria.', 'Conserva la pierna trasera cargada en lanzamientos lentos.', 'Permite que la bola entre a la zona de contacto.'], focus: 'Permanecer asentado en la pierna trasera.', errorAvoid: 'Deslizarse hacia el frente con el cambio de velocidad.' },
+      { id: 'T7', areaKey: 'T', area: '3. Timing', name: 'Drill de decisión', desc: 'Mantener el swing hasta recibir indicación o estímulo para retrasar lo más posible el impacto.', obj: 'Decisión tardía eficiente', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Inicia la secuencia completa de swing.', 'Acepta la orden de frenado o aceleración en el último tercio de vuelo.', 'Controla las manos para detener o soltar el barril.'], focus: 'Dominio de la deceleración y control de frenado.', errorAvoid: 'Dar swings descontrolados por falta de decisión.' },
+      { id: 'T8', areaKey: 'T', area: '3. Timing', name: 'Drill de BP live en juego', desc: 'Simulación de partido en vivo con catcher, lanzador a distancia real y ampayer.', obj: 'Timing específico de juego', diff: 3, mat: 'Lanzador, catcher, pelotas, casco, jaula y bat', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'], steps: ['Entra a la caja simulando situación real de juego.', 'Utiliza tu rutina pre-swing.', 'Ejecuta con agresividad en tu conteo a favor.'], focus: 'Sincronización completa con picheo real de competencia.', errorAvoid: 'Entrar a la caja con dudas o mala actitud mental.' },
+      { id: 'T9', areaKey: 'T', area: '3. Timing', name: 'Drill situacional 2 strikes', desc: 'Situación 2 strikes; reducir movimiento previo sin perder agresividad y defender la zona.', obj: 'Timing bajo presión', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Bp media distancia vel baja', '2.- Bp distancia oficial vel media', '3.- Bp distancia oficial vel Max'], steps: ['Acorta ligeramente el bate (1 pulgada).', 'Reduce la amplitud del paso/zancada para asegurar estabilidad.', 'Protege las esquinas y batea todo lo cercano.'], focus: 'Ajuste de dos strikes para poner la bola en juego.', errorAvoid: 'Tomar un swing largo intentando sacar la bola del campo.' },
 
       // 4. Capacidades Físicas (CF)
-      { id: 'CF1', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento lateral con balón medicinal', desc: 'Lanzamiento rotacional lateral contra pared, ambos lados.', obj: 'Potencia rotacional core/cadera', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'] },
-      { id: 'CF2', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento en columpio con balón medicinal', desc: 'Lanzamiento ascendente desde piernas y cadera.', obj: 'Triple extensión y potencia', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'] },
-      { id: 'CF3', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento de balón medicinal técnica swing', desc: 'Empuje rotacional de balón desde postura atlética.', obj: 'Transferencia pierna-core-brazo', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'] },
-      { id: 'CF4', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Jump Squat', desc: 'Saltos verticales explosivos con aterrizaje estable.', obj: 'Potencia de piernas', diff: 2, mat: 'Espacio seguro, mancuernas y barra hexagonal', modes: ['1.- Sin Peso', '2.- Mancuernas', '3.- Barra Hexagonal'] },
-      { id: 'CF5', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lateral Bound + Stick', desc: 'Salto lateral y estabilización 1–2 s.', obj: 'Potencia lateral y control', diff: 2, mat: 'Espacio seguro, mancuernas y conos', modes: ['1.- Sin Peso', '2.- Mancuernas peso bajo', '3.- Mancuernas peso medio'] },
-      { id: 'CF6', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Twist con disco', desc: 'Giro del disco de un lado al otro de la cintura en posición semi sentado en el piso.', obj: 'Fuerza rotacional del abdomen', diff: 2, mat: 'Espacio seguro y discos', modes: ['1.- Sin Peso', '2.- Disco peso bajo', '3.- Disco peso medio'] },
-      { id: 'CF7', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Plyo Push-Up', desc: 'Flexión explosiva pliométrica en escuadra.', obj: 'Potencia tren superior', diff: 2, mat: 'Espacio seguro', modes: ['1.- Sin Peso', '2.- Mancuernas peso bajo', '3.- Mancuernas peso medio'] },
-      { id: 'CF8', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Rotación con banda elástica', desc: 'Banda elástica; rotar desde cadera con tronco estable.', obj: 'Velocidad rotacional', diff: 2, mat: 'Bandas de resistencia', modes: ['1.- Liga resistencia baja', '2.- Liga resistencia media', '3.- Liga resistencia alta'] },
-      { id: 'CF9', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Anti-Rotation Pallof', desc: 'Resistir rotación con banda o máquina de polea.', obj: 'Estabilidad de core', diff: 2, mat: 'Bandas de resistencia o máquina polea', modes: ['1.- Liga resistencia baja', '2.- Liga resistencia media', '3.- Liga resistencia alta'] },
-      { id: 'CF10', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Variación de pesos del bat', desc: 'Alternar swing con diferentes pesos de bat de manera descendente y ascendente.', obj: 'Velocidad de bate y fuerza específica', diff: 3, mat: 'Bat diferentes pesos, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'CF11', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Sprint 10–20 m', desc: 'Aceleraciones cortas con descanso completo.', obj: 'Potencia neuromuscular', diff: 2, mat: 'Espacio seguro, conos', modes: ['1.- 6 rep. De 10 mt', '2.- 8 rep. De 15 mt', '3.- 10 rep de 20 mt'] },
+      { 
+        id: 'CF1', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento lateral con balón medicinal', 
+        desc: 'Lanzamiento rotacional lateral contra pared, ambos lados.', 
+        obj: 'Potencia rotacional core/cadera', 
+        diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'],
+        steps: [
+          'Ponte de lado a la pared a una distancia de 3 a 4 pies.',
+          'Sostén el balón junto a la cadera trasera manteniendo rodillas flexionadas.',
+          'Gira con fuerza la cadera trasera y lanza el balón explosivamente contra la pared.'
+        ],
+        focus: 'Iniciar la fuerza con la cadera y pies, no solo con los brazos.',
+        errorAvoid: 'Lanzar utilizando únicamente la fuerza de los hombros.'
+      },
+      { id: 'CF2', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento en columpio con balón medicinal', desc: 'Lanzamiento ascendente desde piernas y cadera.', obj: 'Triple extensión y potencia', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'], steps: ['Baja en sentadilla sosteniendo el balón entre las piernas.', 'Explota hacia arriba extendiendo tobillos, rodillas y cadera.', 'Lanza el balón hacia arriba o contra la pared alta.'], focus: 'Triple extensión explosiva del tren inferior.', errorAvoid: 'Curvar la espalda al agacharse.' },
+      { id: 'CF3', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lanzamiento de balón medicinal técnica swing', desc: 'Empuje rotacional de balón desde postura atlética.', obj: 'Transferencia pierna-core-brazo', diff: 1, mat: 'Balón medicinal + pared segura', modes: ['1.- Peso bajo', '2.- Peso medio', '3.- Peso alto'], steps: ['Adopta tu postura idéntica a la de bateo.', 'Realiza la carga trasladando el peso atrás.', 'Empuja el balón imitando la ruta del swing rotacional.'], focus: 'Transferencia directa de la energía del suelo al abdomen.', errorAvoid: 'Desconectar la cadera durante el empuje.' },
+      { id: 'CF4', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Jump Squat', desc: 'Saltos verticales explosivos con aterrizaje estable.', obj: 'Potencia de piernas', diff: 2, mat: 'Espacio seguro, mancuernas y barra hexagonal', modes: ['1.- Sin Peso', '2.- Mancuernas', '3.- Barra Hexagonal'], steps: ['Flexiona las rodillas a 90 grados.', 'Impúlsate explosivamente buscando la máxima altura.', 'Aterriza suavemente sobre las puntas de los pies amortiguando con las rodillas.'], focus: 'Aterrizaje controlado y potencia vertical.', errorAvoid: 'Colapsar las rodillas hacia adentro al despegar o aterrizar.' },
+      { id: 'CF5', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Lateral Bound + Stick', desc: 'Salto lateral y estabilización 1–2 s.', obj: 'Potencia lateral y control', diff: 2, mat: 'Espacio seguro, mancuernas y conos', modes: ['1.- Sin Peso', '2.- Mancuernas peso bajo', '3.- Mancuernas peso medio'], steps: ['Impúlsate con una pierna saltando lateralmente hacia el otro extremo.', 'Aterriza sobre la pierna contraria absorbiendo el impacto.', 'Sostén la postura estática por 2 segundos sin perder balance.'], focus: 'Estabilidad de rodilla y tobillo en frenados laterales.', errorAvoid: 'Tocar el suelo con el otro pie para no caerse.' },
+      { id: 'CF6', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Twist con disco', desc: 'Giro del disco de un lado al otro de la cintura en posición semi sentado en el piso.', obj: 'Fuerza rotacional del abdomen', diff: 2, mat: 'Espacio seguro y discos', modes: ['1.- Sin Peso', '2.- Disco peso bajo', '3.- Disco peso medio'], steps: ['Siéntate en el piso con rodillas flexionadas y pies ligeramente elevados.', 'Sostén el disco frente al pecho.', 'Gira el tronco alternando el disco de lado a lado rozando el piso.'], focus: 'Tensión constante en los oblicuos.', errorAvoid: 'Mover solo los brazos sin rotar los hombros.' },
+      { id: 'CF7', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Plyo Push-Up', desc: 'Flexión explosiva pliométrica en escuadra.', obj: 'Potencia tren superior', diff: 2, mat: 'Espacio seguro', modes: ['1.- Sin Peso', '2.- Mancuernas peso bajo', '3.- Mancuernas peso medio'], steps: ['Colócate en posición de flexión de pecho.', 'Baja el pecho al suelo y despega con fuerza explosiva.', 'Separa las manos del piso e impacta suavemente de regreso.'], focus: 'Velocidad de empuje en el tren superior.', errorAvoid: 'Dejar caer la cadera arqueando la espalda baja.' },
+      { id: 'CF8', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Rotación con banda elástica', desc: 'Banda elástica; rotar desde cadera con tronco estable.', obj: 'Velocidad rotacional', diff: 2, mat: 'Bandas de resistencia', modes: ['1.- Liga resistencia baja', '2.- Liga resistencia media', '3.- Liga resistencia alta'], steps: ['Ancla la banda elástica a la altura del pecho.', 'Tensa la banda sosteniéndola con ambas manos extendidas.', 'Gira la cadera y tronco acelerando en la dirección del swing.'], focus: 'Tensión continua en todo el rango de movimiento.', errorAvoid: 'Flexionar los codos acercando las manos al pecho.' },
+      { id: 'CF9', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Anti-Rotation Pallof', desc: 'Resistir rotación con banda o máquina de polea.', obj: 'Estabilidad de core', diff: 2, mat: 'Bandas de resistencia o máquina polea', modes: ['1.- Liga resistencia baja', '2.- Liga resistencia media', '3.- Liga resistencia alta'], steps: ['Ponte de lado al anclaje de la liga a la altura del esternón.', 'Extiende los brazos hacia al frente resistiendo la fuerza que intenta girarte.', 'Mantén la postura totalmente inmóvil durante 3 segundos.'], focus: 'Resistencia anti-rotacional de la zona media.', errorAvoid: 'Inclinarse hacia el lado del anclaje.' },
+      { id: 'CF10', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Variación de pesos del bat', desc: 'Alternar swing con diferentes pesos de bat de manera descendente y ascendente.', obj: 'Velocidad de bate y fuerza específica', diff: 3, mat: 'Bat diferentes pesos, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'], steps: ['Realiza 5 swings con bat pesado (+20%).', 'Realiza 5 swings con bat liviano (-20%).', 'Finaliza con 5 swings con tu bat de juego buscando máxima aceleración.'], focus: 'Estimulación neuromuscular de supervelocidad.', errorAvoid: 'Modificar la mecánica al cambiar de peso.' },
+      { id: 'CF11', areaKey: 'CF', area: '4. Capacidades físicas', name: 'Sprint 10–20 m', desc: 'Aceleraciones cortas con descanso completo.', obj: 'Potencia neuromuscular', diff: 2, mat: 'Espacio seguro, conos', modes: ['1.- 6 rep. De 10 mt', '2.- 8 rep. De 15 mt', '3.- 10 rep de 20 mt'], steps: ['Adopta posición de salida atlética.', 'Explota los primeros 3 pasos con zancadas potentes.', 'Mantiene aceleración máxima hasta cruzar el cono.'], focus: 'Reclutamiento de fibras musculares de explosión rápida.', errorAvoid: 'Trotar la salida sin máxima intención.' },
 
       // 5. Táctica y Mentalidad (TM)
-      { id: 'TM1', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Mapa de 9 Zonas de ataque', desc: 'Definir zonas verde/amarillo/rojo y plan de ataque de golpeo solo a la zona indicada.', obj: 'Selección de pitcheo', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'] },
-      { id: 'TM2', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Enfoque basado en conteo', desc: 'Simular 0-0, 1-0, 0-2, 2-1, 3-2 con objetivo distinto.', obj: 'Plan por conteo', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM3', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Batazo situacional', desc: 'Simular situación de Corredor 3B <2 outs, squeeze play, mover corredor, fly de sacrificio.', obj: 'Ejecución táctica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM4', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Generar tarjeta de tendencia', desc: 'Antes del turno: tendencia pitcher, zona objetivo, plan B.', obj: 'Preparación estratégica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM5', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Bateo con consecuencia', desc: 'Generar presión, asignar castigo o reto a malos contactos.', obj: 'Rendimiento bajo presión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM6', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'RESET', desc: 'Respiración + palabra clave + focalización entre pitcheos.', obj: 'Regulación emocional', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM7', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Visualización previa al turno', desc: 'Visualizar pitcheo objetivo y contacto antes de cada ronda de bateo.', obj: 'Preparación mental', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM8', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Swing a zona caliente', desc: 'Simular conteo a favor y solo hacer swing a zona fuerte del bateador.', obj: 'Preparación estratégica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM9', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Turno con 2 strikes', desc: 'Fouls, toques correctos y contacto competitivo con 2 strikes.', obj: 'Resiliencia y ajuste', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] },
-      { id: 'TM10', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Lectura anticipada vs real', desc: 'Comparar plan anticipado con lectura real; registrar aciertos.', obj: 'Disciplina cognitiva', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'] }
+      { 
+        id: 'TM1', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Mapa de 9 Zonas de ataque', 
+        desc: 'Definir zonas verde/amarillo/rojo y plan de ataque de golpeo solo a la zona indicada.', 
+        obj: 'Selección de pitcheo', 
+        diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Soft toss', '2.- Front toss', '3.- BP'],
+        steps: [
+          'Divide mentalmente el strike zone en 9 cuadrantes.',
+          'Selecciona previamente la zona "Verde" (tu zona más fuerte).',
+          'Ataca únicamente los lanzamientos que caigan dentro de esa cuadrícula predeterminada.'
+        ],
+        focus: 'Disciplina táctica y control de la ansiedad.',
+        errorAvoid: 'Expandir la zona haciendo swings a pitcheos amarillos o rojos en conteos neutros.'
+      },
+      { id: 'TM2', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Enfoque basado en conteo', desc: 'Simular 0-0, 1-0, 0-2, 2-1, 3-2 con objetivo distinto.', obj: 'Plan por conteo', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['El coach indica el conteo antes del picheo.', 'En 2-0 / 3-1 busca únicamente tu picheo de poder.', 'En 0-2 achica la zona y prioriza el contacto.'], focus: 'Mentalidad adaptable según la ventaja del conteo.', errorAvoid: 'Hacer el mismo swing agresivo sin importar el conteo.' },
+      { id: 'TM3', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Batazo situacional', desc: 'Simular situación de Corredor 3B <2 outs, squeeze play, mover corredor, fly de sacrificio.', obj: 'Ejecución táctica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Visualiza al corredor en base y la cantidad de outs.', 'Ajusta tu punto de impacto para elevar la bola (fly de sac) o batear hacia la derecha.', 'Ejecuta el batazo necesario para el equipo.'], focus: 'Priorizar el resultado táctico sobre el éxito individual.', errorAvoid: 'Conectar rola por el sirope con corredor en tercera y 1 out.' },
+      { id: 'TM4', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Generar tarjeta de tendencia', desc: 'Antes del turno: tendencia pitcher, zona objetivo, plan B.', obj: 'Preparación estratégica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Repasa mentalmente los pitcheos principales del lanzador.', 'Determina tu plan A (ej: buscar la recta adentro).', 'Define el ajuste si te lanza el picheo secundario.'], focus: 'Preparación estructurada antes de pisar el cajón.', errorAvoid: 'Subir a batear sin idea de los picheos del rival.' },
+      { id: 'TM5', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Bateo con consecuencia', desc: 'Generar presión, asignar castigo o reto a malos contactos.', obj: 'Rendimiento bajo presión', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Establece una meta (ej: 4 de 5 contactos macizos a los jardines).', 'Si no logras la meta, realiza 10 flexiones o sprints.', 'Afronta cada pitcheo con la tensión real del juego.'], focus: 'Manejo del estrés y enfoque bajo condiciones exigentes.', errorAvoid: 'Tomar la ronda a la ligera sin nivel de atención.' },
+      { id: 'TM6', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'RESET', desc: 'Respiración + palabra clave + focalización entre pitcheos.', obj: 'Regulación emocional', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Tras un pitcheo fallido o strike, sal del cajón de bateo.', 'Inhala profundo durante 4 segundos y suelta el aire.', 'Mira la marca de tu bate y repite tu palabra clave (ej: "Suelto", "Enfocado").'], focus: 'Liberar la frustración antes de recibir el siguiente envío.', errorAvoid: 'Permanecer molesto dentro del cajón arrastrando el error.' },
+      { id: 'TM7', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Visualización previa al turno', desc: 'Visualizar pitcheo objetivo y contacto antes de cada ronda de bateo.', obj: 'Preparación mental', diff: 1, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Cierra los ojos en el círculo de espera por 10 segundos.', 'Visualiza con claridad la bola saliendo del guante y tu swing conectando con el centro del bate.', 'Siente la confianza del contacto sólido.'], focus: 'Creación de imágenes mentales positivas.', errorAvoid: 'Visualizar ponches o malos batazos.' },
+      { id: 'TM8', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Swing a zona caliente', desc: 'Simular conteo a favor y solo hacer swing a zona fuerte del bateador.', obj: 'Preparación estratégica', diff: 2, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Define tu zona de máxima potencia (Hot Zone).', 'Exige que el lanzamiento esté exactamente ahí.', 'Deja pasar pitcheos buenos si no están en tu cuadrante ideal.'], focus: 'Dominio de la agresividad selectiva.', errorAvoid: 'Regalar el swing en picheos que el lanzador domina.' },
+      { id: 'TM9', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Turno con 2 strikes', desc: 'Fouls, toques correctos y contacto competitivo con 2 strikes.', obj: 'Resiliencia y ajuste', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Enfréntate a 5 lanzamientos consecutivos con conteo virtual 0-2.', 'Protege las esquinas dando fouls si es necesario.', 'Compite duro hasta poner la bola en territorio de juego.'], focus: 'Batallar y vender caro el out.', errorAvoid: 'Renderse o abanicar sin convicción.' },
+      { id: 'TM10', areaKey: 'TM', area: '5. Táctica y mentalidad', name: 'Lectura anticipada vs real', desc: 'Comparar plan anticipado con lectura real; registrar aciertos.', obj: 'Disciplina cognitiva', diff: 3, mat: 'Bate, pelotas, red/jaula', modes: ['1.- Front toss', '2.- Bp vel media', '3.- Bp vel Max'], steps: ['Anticipa el picheo que crees que vendrá.', 'Observa el pitcheo real lanzado.', 'Verifica la precisión de tu lectura y ajusta para la siguiente repetición.'], focus: 'Desarrollo del instinto de bateo.', errorAvoid: 'Batear con la mente en blanco.' }
     ];
 
     const VOLUME_MATRIX = {
       'infantil': {
-        'Principiante': { totalSwings: 80, dist: { TP: { pct: 40, series: 4, reps: 8 }, O: { pct: 30, series: 3, reps: 8 }, T: { pct: 20, series: 2, reps: 8 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 8 } } },
+        'Principiante': { totalSwings: 80, dist: { TP: { pct: 40, series: 4, reps: 8 }, O: { pct: 30, series: 3, reps: 8 }, T: { pct: 20, series: 2, reps: 8 }, CF: { pct: 10, series: 2, reps: 8 }, TM: { pct: 10, series: 1, reps: 8 } } },
         'Intermedio':   { totalSwings: 100, dist: { TP: { pct: 20, series: 2, reps: 10 }, O: { pct: 20, series: 2, reps: 10 }, T: { pct: 30, series: 3, reps: 10 }, CF: { pct: 10, series: 1, reps: 10 }, TM: { pct: 20, series: 2, reps: 10 } } },
         'Avanzado':     { totalSwings: 120, dist: { TP: { pct: 10, series: 1, reps: 12 }, O: { pct: 10, series: 1, reps: 12 }, T: { pct: 30, series: 3, reps: 12 }, CF: { pct: 20, series: 2, reps: 12 }, TM: { pct: 30, series: 3, reps: 12 } } }
       },
       'junior': {
-        'Principiante': { totalSwings: 100, dist: { TP: { pct: 40, series: 4, reps: 10 }, O: { pct: 30, series: 3, reps: 10 }, T: { pct: 20, series: 2, reps: 10 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 10 } } },
+        'Principiante': { totalSwings: 100, dist: { TP: { pct: 40, series: 4, reps: 10 }, O: { pct: 30, series: 3, reps: 10 }, T: { pct: 20, series: 2, reps: 10 }, CF: { pct: 10, series: 2, reps: 10 }, TM: { pct: 10, series: 1, reps: 10 } } },
         'Intermedio':   { totalSwings: 120, dist: { TP: { pct: 20, series: 2, reps: 12 }, O: { pct: 20, series: 2, reps: 12 }, T: { pct: 30, series: 3, reps: 12 }, CF: { pct: 10, series: 1, reps: 12 }, TM: { pct: 20, series: 2, reps: 12 } } },
         'Avanzado':     { totalSwings: 150, dist: { TP: { pct: 10, series: 1, reps: 15 }, O: { pct: 10, series: 1, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 20, series: 2, reps: 15 }, TM: { pct: 30, series: 3, reps: 15 } } }
       },
       'juvenil': {
-        'Principiante': { totalSwings: 120, dist: { TP: { pct: 40, series: 4, reps: 12 }, O: { pct: 30, series: 3, reps: 12 }, T: { pct: 20, series: 2, reps: 12 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 12 } } },
+        'Principiante': { totalSwings: 120, dist: { TP: { pct: 40, series: 4, reps: 12 }, O: { pct: 30, series: 3, reps: 12 }, T: { pct: 20, series: 2, reps: 12 }, CF: { pct: 10, series: 3, reps: 12 }, TM: { pct: 10, series: 1, reps: 12 } } },
         'Intermedio':   { totalSwings: 150, dist: { TP: { pct: 20, series: 2, reps: 15 }, O: { pct: 20, series: 2, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 10, series: 1, reps: 15 }, TM: { pct: 20, series: 2, reps: 15 } } },
         'Avanzado':     { totalSwings: 180, dist: { TP: { pct: 10, series: 1, reps: 18 }, O: { pct: 10, series: 1, reps: 18 }, T: { pct: 30, series: 3, reps: 18 }, CF: { pct: 20, series: 2, reps: 18 }, TM: { pct: 30, series: 3, reps: 18 } } }
       },
       'adulto': {
-        'Principiante': { totalSwings: 120, dist: { TP: { pct: 40, series: 4, reps: 12 }, O: { pct: 30, series: 3, reps: 12 }, T: { pct: 20, series: 2, reps: 12 }, CF: { pct: 0, series: 0, reps: 0 }, TM: { pct: 10, series: 1, reps: 12 } } },
-        'Intermedio':   { totalSwings: 150, dist: { TP: { pct: 20, series: 2, reps: 15 }, O: { pct: 20, series: 2, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 10, series: 1, reps: 15 }, TM: { pct: 20, series: 2, reps: 15 } } },
+        'Principiante': { totalSwings: 120, dist: { TP: { pct: 40, series: 4, reps: 12 }, O: { pct: 30, series: 3, reps: 12 }, T: { pct: 20, series: 2, reps: 12 }, CF: { pct: 10, series: 3, reps: 12 }, TM: { pct: 10, series: 1, reps: 12 } } },
+        'Intermedio':   { totalSwings: 150, dist: { TP: { pct: 20, series: 2, reps: 15 }, O: { pct: 20, series: 2, reps: 15 }, T: { pct: 30, series: 3, reps: 15 }, CF: { pct: 10, series: 1, reps: 15 }, TM: { pct: 20, series: 2, reps: 10 } } },
         'Avanzado':     { totalSwings: 180, dist: { TP: { pct: 10, series: 1, reps: 18 }, O: { pct: 10, series: 1, reps: 18 }, T: { pct: 30, series: 3, reps: 18 }, CF: { pct: 20, series: 2, reps: 18 }, TM: { pct: 30, series: 3, reps: 18 } } }
       }
     };
@@ -161,6 +269,7 @@
       const [isAuthenticated, setIsAuthenticated] = useState(false);
       const [userEmail, setUserEmail] = useState('');
       const [userPassword, setUserPassword] = useState('');
+      const [loginError, setLoginError] = useState('');
       const [activeTab, setActiveTab] = useState('generator');
 
       // Form Options
@@ -180,6 +289,7 @@
       // Session State
       const [currentSession, setCurrentSession] = useState(null);
       const [completedBlockIds, setCompletedBlockIds] = useState([]);
+      const [expandedDrillIndex, setExpandedDrillIndex] = useState(null);
       const [randomQuote, setRandomQuote] = useState(MOTIVATIONAL_QUOTES[0]);
       const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
@@ -213,6 +323,10 @@
         } else {
           setCompletedBlockIds([...completedBlockIds, blockIndex]);
         }
+      };
+
+      const toggleExpandDrill = (idx) => {
+        setExpandedDrillIndex(expandedDrillIndex === idx ? null : idx);
       };
 
       const generateSession = () => {
@@ -255,14 +369,36 @@
 
         slots.forEach((areaKey) => {
           let origAreaInfo = matrixConfig.dist[areaKey] || { pct: 20, series: 2, reps: 10 };
-          let origPct = origAreaInfo.pct > 0 ? origAreaInfo.pct : (100 / selectedAreaKeys.length);
           
+          if (experienceLevel === 'Principiante' && areaKey === 'CF') {
+            if (ageCategory === 'infantil') {
+              origAreaInfo = { pct: 10, series: 2, reps: 8 };
+            } else if (ageCategory === 'junior') {
+              origAreaInfo = { pct: 10, series: 2, reps: 10 };
+            } else if (ageCategory === 'juvenil' || ageCategory === 'adulto') {
+              origAreaInfo = { pct: 10, series: 3, reps: 12 };
+            }
+          }
+
+          let origPct = origAreaInfo.pct > 0 ? origAreaInfo.pct : (100 / selectedAreaKeys.length);
           let areaWeight = (origPct / totalPctSelected) / (TARGET_BLOCK_COUNT / selectedAreaKeys.length);
           let blockSwingsTarget = Math.round(adjustedTotalSwings * areaWeight);
 
           let repsPerSet = origAreaInfo.reps > 0 ? origAreaInfo.reps : 10;
           let calculatedSeries = Math.max(1, Math.round(blockSwingsTarget / repsPerSet));
+          
+          if (experienceLevel === 'Principiante' && areaKey === 'CF') {
+            calculatedSeries = origAreaInfo.series;
+            repsPerSet = origAreaInfo.reps;
+          }
+
           let blockReps = calculatedSeries * repsPerSet;
+
+          if (experienceLevel === 'Principiante' && areaKey === 'CF') {
+            blockReps = Math.min(36, blockReps);
+            calculatedSeries = Math.max(1, Math.round(blockReps / repsPerSet));
+            blockReps = calculatedSeries * repsPerSet;
+          }
 
           calculatedSwingsSum += blockReps;
 
@@ -289,7 +425,10 @@
             series: calculatedSeries,
             repsPerSeries: repsPerSet,
             pct: Math.round(areaWeight * 100),
-            reps: blockReps
+            reps: blockReps,
+            steps: chosenDrill.steps || [],
+            focus: chosenDrill.focus || 'Enfoque técnico de la repetición.',
+            errorAvoid: chosenDrill.errorAvoid || 'Evitar perder la postura biomecánica.'
           });
         });
 
@@ -304,6 +443,7 @@
 
         setCurrentSession(newSession);
         setCompletedBlockIds([]);
+        setExpandedDrillIndex(0); // Open detailed execution for first exercise by default
         setActiveTab('session');
       };
 
@@ -312,7 +452,6 @@
         setIsGeneratingPdf(true);
 
         try {
-          // Prepare clean element for PDF export
           const element = routineRef.current;
           const opt = {
             margin:       [10, 10, 10, 10],
@@ -322,20 +461,19 @@
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
           };
 
-          // Generate PDF and trigger browser download
           if (window.html2pdf) {
             await window.html2pdf().set(opt).from(element).save();
           }
 
-          // Build WhatsApp Pre-filled Summary Message
           const summaryText = 
-            `⚾ *BEISBOLPOWER INTELIGENTE - RUTINA DE BATEO* ⚾\n\n` +
+            `⚾ *BEISBOLPOWER INTELIGENTE - RUTINA DE BATEO* ⚾\n` +
+            `🧢 *Coach Julio Canché*\n\n` +
             `👤 *Categoría:* ${currentSession.ageCategory.toUpperCase()} (${currentSession.experienceLevel})\n` +
             `⏱️ *Tiempo Estimado:* ${currentSession.availableMinutes} min\n` +
             `🎯 *Volumen Recomendado:* ${currentSession.totalSwings} Swings Totales\n\n` +
-            `📋 *EJERCICIOS ASIGNADOS:*\n` +
-            currentSession.blocks.map((b, i) => `${i + 1}. *${b.name}* (${b.areaKey})\n   └ 🔄 ${b.series} series x ${b.repsPerSeries} reps (${b.reps} swings)\n   └ ⚙️ ${b.mode}`).join('\n\n') +
-            `\n\n📄 *Nota:* Se ha descargado tu archivo PDF con el plan gráfico completo. Adjúntalo en esta conversación.`;
+            `📋 *EJERCICIOS ASIGNADOS CON DETALLES DE EJECUCIÓN:*\n` +
+            currentSession.blocks.map((b, i) => `${i + 1}. *${b.name}* (${b.areaKey})\n   └ 🔄 ${b.series} series x ${b.repsPerSeries} reps (${b.reps} swings)\n   └ ⚙️ ${b.mode}\n   └ 🎯 *Foco:* ${b.focus}`).join('\n\n') +
+            `\n\n📄 *Nota:* Se ha descargado tu archivo PDF con la guía paso a paso. Adjúntalo a este mensaje.`;
 
           const encodedMessage = encodeURIComponent(summaryText);
           const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMessage}`;
@@ -353,7 +491,16 @@
 
       const handleLogin = (e) => {
         e.preventDefault();
-        if (userEmail.trim()) setIsAuthenticated(true);
+        setLoginError('');
+        if (!userEmail.trim()) {
+          setLoginError('Por favor ingresa un correo válido.');
+          return;
+        }
+        if (userPassword !== 'bateo79') {
+          setLoginError('Contraseña incorrecta. Ingrese bateo79');
+          return;
+        }
+        setIsAuthenticated(true);
       };
 
       const generateNewQuote = () => {
@@ -400,6 +547,12 @@
               </div>
 
               <form onSubmit={handleLogin} className="space-y-4 text-left backdrop-blur-md bg-slate-900/70 p-5 rounded-2xl border border-slate-800 shadow-xl">
+                {loginError && (
+                  <div className="bg-red-500/20 border border-red-500/50 text-red-300 text-xs p-3 rounded-xl flex items-center gap-2">
+                    <i className="fas fa-exclamation-circle"></i>
+                    <span>{loginError}</span>
+                  </div>
+                )}
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase">Correo Atleta / Entrenador</label>
                   <input 
@@ -412,7 +565,7 @@
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase">Contraseña</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Contraseña (clave: bateo79)</label>
                   <input 
                     type="password" 
                     required 
@@ -468,7 +621,7 @@
             </div>
           </div>
 
-          {/* Scrollable Container */}
+          {}
           <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-hide pb-20">
 
             {/* TAB 1: DIAGNÓSTICO */}
@@ -578,13 +731,13 @@
                     onClick={generateSession}
                     className="w-full bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 hover:opacity-95 text-white font-black py-4 rounded-xl shadow-xl uppercase tracking-wider text-sm flex items-center justify-center gap-2 mt-4"
                   >
-                    <i className="fas fa-bolt"></i> Generar Rutina Personalizada
+                    <i className="fas fa-bolt"></i> Generar Sesión Personalizada
                   </button>
                 </div>
               </div>
             )}
 
-            {/* TAB 2: RUTINA GENERADA + MEDIDOR DE PROGRESO */}
+            {}
             {activeTab === 'session' && (
               <div className="space-y-5">
                 {!currentSession ? (
@@ -655,7 +808,7 @@
                       <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border border-emerald-500/60 rounded-2xl p-4 text-center space-y-2 shadow-xl animate-fade-in">
                         <i className="fas fa-trophy text-emerald-400 text-3xl animate-bounce"></i>
                         <h3 className="text-sm font-black text-white uppercase tracking-wider">¡Sesión de Bateo Finalizada!</h3>
-                        <p className="text-xs text-emerald-300">¡Gran trabajo! Has completado exitosamente los {currentSession.totalSwings} swings de la rutina.</p>
+                        <p className="text-xs text-emerald-300">¡Excelente trabajo! Has completado exitosamente los {currentSession.totalSwings} swings de la rutina.</p>
                       </div>
                     )}
 
@@ -668,15 +821,17 @@
                           <span className="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Volumen Recomendado Ajustado</span>
                           <h2 className="text-3xl font-black text-white">{currentSession.totalSwings} <span className="text-xs font-normal text-slate-400">Swings Totales</span></h2>
                           <p className="text-[11px] text-slate-400 mt-1 capitalize">
-                            {currentSession.ageCategory} • {currentSession.experienceLevel} • {currentSession.selectedCount} Áreas
+                            Coach Julio Canché • {currentSession.ageCategory} • {currentSession.experienceLevel}
                           </p>
                         </div>
                       </div>
 
-                      {/* Bloques de Ejercicios con Checkboxes de Conclusión */}
+                      {/* Bloques de Ejercicios con Detalle Extendido de Ejecución */}
                       <div className="space-y-3">
                         {currentSession.blocks.map((block, idx) => {
                           const isDone = completedBlockIds.includes(idx);
+                          const isExpanded = expandedDrillIndex === idx;
+
                           return (
                             <div 
                               key={idx} 
@@ -710,17 +865,63 @@
 
                               <p className="text-xs text-slate-300 leading-relaxed">{block.desc}</p>
                               
-                              <div className="bg-slate-900/60 p-2.5 rounded-xl text-[11px] text-slate-300 space-y-1 border border-slate-800">
+                              <div className="bg-slate-900/60 p-2.5 rounded-xl text-[11px] text-slate-300 space-y-1.5 border border-slate-800">
                                 <div className="flex justify-between items-center mb-1">
                                   <span className="font-bold text-slate-400">Dosis de Swings:</span>
                                   <span className="text-xs font-mono font-bold text-orange-400 bg-slate-950 px-2 py-0.5 rounded border border-orange-500/30">
                                     {block.series} series x {block.repsPerSeries} reps ({block.reps} swings)
                                   </span>
                                 </div>
-                                <div><strong className="text-slate-400">Modo de Ejecución:</strong> <span className="text-orange-300">{block.mode}</span></div>
+                                <div><strong className="text-slate-400">Modo de Ejecución:</strong> <span className="text-orange-300 font-medium">{block.mode}</span></div>
                                 <div><strong className="text-slate-400">Objetivo:</strong> {block.objective}</div>
                                 <div><strong className="text-slate-400">Material:</strong> {block.material}</div>
                               </div>
+
+                              {/* ACCORDION DE EJECUCIÓN DETALLADA */}
+                              <div className="border-t border-slate-700/60 pt-2">
+                                <button 
+                                  type="button"
+                                  onClick={() => toggleExpandDrill(idx)}
+                                  className="w-full flex justify-between items-center py-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors no-print"
+                                >
+                                  <span className="flex items-center gap-1.5">
+                                    <i className="fas fa-list-check text-xs"></i> 
+                                    Pasos de Ejecución Técnica ({block.steps.length})
+                                  </span>
+                                  <i className={`fas ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                                </button>
+
+                                {/* Pasos Desplegados o Visibles para PDF */}
+                                <div className={`space-y-3 pt-2 text-xs ${isExpanded ? 'block' : 'hidden sm:block'}`}>
+                                  {block.steps.length > 0 && (
+                                    <div className="bg-slate-950/70 p-3 rounded-xl border border-slate-800 space-y-2">
+                                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Paso a Paso de Ejecución:</span>
+                                      <ol className="space-y-1.5 pl-4 list-decimal text-slate-300">
+                                        {block.steps.map((step, sIdx) => (
+                                          <li key={sIdx} className="leading-relaxed">{step}</li>
+                                        ))}
+                                      </ol>
+                                    </div>
+                                  )}
+
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                                    <div className="bg-emerald-950/30 border border-emerald-500/30 p-2.5 rounded-xl">
+                                      <span className="font-bold text-emerald-400 block mb-0.5">
+                                        <i className="fas fa-bullseye mr-1"></i> Foco Biomecánico Clave:
+                                      </span>
+                                      <p className="text-slate-300 leading-normal">{block.focus}</p>
+                                    </div>
+
+                                    <div className="bg-red-950/30 border border-red-500/30 p-2.5 rounded-xl">
+                                      <span className="font-bold text-red-400 block mb-0.5">
+                                        <i className="fas fa-triangle-exclamation mr-1"></i> Error Común a Evitar:
+                                      </span>
+                                      <p className="text-slate-300 leading-normal">{block.errorAvoid}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                             </div>
                           );
                         })}
@@ -753,7 +954,7 @@
 
           </div>
 
-          {/* Navigation Bar */}
+          {}
           <div className="absolute bottom-0 inset-x-0 bg-slate-950 border-t border-slate-800 px-3 py-2 flex justify-around items-center no-print">
             <button 
               onClick={() => setActiveTab('generator')}
